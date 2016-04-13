@@ -14,7 +14,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
-using System;
 
 namespace sakura
 {
@@ -33,7 +32,8 @@ namespace sakura
 
         float kx, ky;
 
-        int toucheswas = 0;
+        Button turn;
+        private int touches = 0;
 
         public Vertex(Vector2 p, float kx, float ky, bool eU, bool eR, bool eD, bool eL)
         {
@@ -51,6 +51,8 @@ namespace sakura
 
             this.kx = kx;
             this.ky = ky;
+
+            turn = new Button(p.X, p.Y, kx);
         }
 
         public void Tap()
@@ -86,13 +88,15 @@ namespace sakura
             edgeLeft = edgeLeftNew;
         }
 
-        public void Draw(Texture2D textureFlower, Texture2D textureLeaf, Texture2D textureLeafHor, SpriteBatch spriteBatch, int touches)
+        public void Draw(Texture2D textureFlower, Texture2D textureLeaf, Texture2D textureLeafHor, SpriteBatch spriteBatch)
         {
+            turn.Process();
 
-            if(toucheswas < touches)
+            if(turn.IsEnabled)
             {
                 Tap();
-                toucheswas = touches;
+                touches++;
+                turn.Reset();
             }
 
             //  Rectangle posrect = new Rectangle((int)(position.X), (int)(position.Y), (int)(44 * kx), (int)(44 * kx));
@@ -107,28 +111,28 @@ namespace sakura
                spriteBatch.Draw(textureLeaf, /*position + new Vector2(textureFlower.Width/2 - textureLeaf.Width/2, -textureLeaf.Height)*/ rect, 
                 null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
 
-            rect = new Rectangle((int)(position.X + 44.0f * kx), (int)(position.Y + 44.0f * kx / 2.0f - 10.0f * kx/ 2.0f), (int)(32.0f * kx), (int)(10.0f * kx));
-             if (edgeRight)
-               spriteBatch.Draw(textureLeafHor, /*position + new Vector2((textureFlower.Width + textureLeaf.Height/2), textureFlower.Height/2)*/  rect,
-                 null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0f);
+            rect = new Rectangle((int)(position.X + 44.0f * kx + 32.0f * kx / 2.0f), (int)(position.Y + 44.0f * kx / 2.0f), (int)(10.0f * kx), (int)(32.0f * kx));
+                if (edgeRight)
+                    spriteBatch.Draw(textureLeaf, /*position + new Vector2(-textureLeaf.Height/2, textureFlower.Height / 2)*/ rect,
+                      null, Color.White, (float)(Math.PI / 2.0f), new Vector2(textureLeaf.Width / 2.0f, textureLeaf.Height / 2.0f), SpriteEffects.None, 0f);
 
             rect = new Rectangle((int)(position.X + 44 * kx / 2 - 10 * kx / 2), (int)(position.Y + 44 * kx), (int)(10 * kx), (int)(32 * kx));
             if (edgeDown)
               spriteBatch.Draw(textureLeaf, /*position + new Vector2(textureFlower.Width / 2 - textureLeaf.Width / 2, textureFlower.Height)*/ rect,
                 null, Color.White, 0f, Vector2.Zero, SpriteEffects.FlipHorizontally, 0f);
 
-            rect = new Rectangle((int)Math.Round(position.X - 32 * kx), (int)Math.Round(position.Y + 44 * kx / 2 - 10.0f * kx / 2), (int)(32.0f * kx) + 1, (int)(10.0f * kx) + 1);
-             if (edgeLeft)
-                spriteBatch.Draw(textureLeafHor, /*position + new Vector2(-textureLeaf.Height/2, textureFlower.Height / 2)*/ rect,
-                  null, Color.White, 0, Vector2.Zero, SpriteEffects.FlipVertically, 0f);
+          //  rect = new Rectangle((int)Math.Round(position.X - 32 * kx), (int)Math.Round(position.Y + 44 * kx / 2 - 10.0f * kx / 2), (int)(32.0f * kx) + 1, (int)(10.0f * kx) + 1);
+          //   if (edgeLeft)
+           //     spriteBatch.Draw(textureLeafHor, /*position + new Vector2(-textureLeaf.Height/2, textureFlower.Height / 2)*/ rect,
+           //       null, Color.White, 0, Vector2.Zero, SpriteEffects.FlipVertically, 0f);
 
-     /*       rect = new Rectangle((int)(position.X - 32 * kx / 2), (int)(position.Y + 44 * kx / 2), (int)(10 * kx), (int)(32 * kx));
+           rect = new Rectangle((int)(position.X - 32.0f * kx / 2.0f), (int)(position.Y + 44.0f * kx / 2.0f), (int)(10 * kx) + 1, (int)(32 * kx) + 1);     
             if (edgeLeft)
-                spriteBatch.Draw(textureLeaf, /*position + new Vector2(-textureLeaf.Height/2, textureFlower.Height / 2)*/ /*rect,
-                  null, Color.White, (float)(-Math.PI / 2.0f), new Vector2(10 * kx / 2, 32 * kx / 2), SpriteEffects.None, 0f);*/
+                spriteBatch.Draw(textureLeaf, /*position + new Vector2(-textureLeaf.Height/2, textureFlower.Height / 2)*/ rect,
+                  null, Color.White, (float)(-Math.PI / 2.0f), new Vector2(textureLeaf.Width / 2.0f, textureLeaf.Height / 2.0f), SpriteEffects.None, 0f);
 
-
-
+           
+                
             /*       if (edgeUp)
                       spriteBatch.Draw(textureLeaf, position + new Vector2(textureFlower.Width/2 - textureLeaf.Width/2, -textureLeaf.Height), 
                         null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);

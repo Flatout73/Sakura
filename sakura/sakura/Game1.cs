@@ -16,9 +16,7 @@ namespace sakura
         Texture2D closedFlower, Leaf, LeafHor;
         Vector2 flower0Position;
         int resX, resY;
-        int touches = 0;
         static float kx = 1f, ky = 1f;
-        bool touch;
         Vertex[] flowers;
         private TouchCollection gamePadState;
         private TouchCollection lastGamePadState;
@@ -60,12 +58,11 @@ namespace sakura
             }
             flower0Position = new Vector2((int)(32 * kx), (int)(32 * kx));
             flowers = new Vertex[5];
+
             for (int i = 0; i < 5; i++)
             {
                 flowers[i] = new Vertex(flower0Position + new Vector2((64 + 44) * kx * i, 0), kx, ky, true, true, false, true);
             }
-
-            touch = false;
 
 
         }
@@ -101,19 +98,10 @@ namespace sakura
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            gamePadState = TouchPanel.GetState();
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 Exit();
 
-            var tc = TouchPanel.GetState();
-            if (tc.Count == 1)
-            {
-                touch = true;
-                touches++;
-            } 
-
-            lastGamePadState = gamePadState;
 
             // TODO: Add your update logic here
 
@@ -141,7 +129,7 @@ namespace sakura
 
             for (int i = 0; i < 5; i++)
             {
-                flowers[i].Draw(closedFlower, Leaf, LeafHor, spriteBatch, touches);
+                flowers[i].Draw(closedFlower, Leaf, LeafHor, spriteBatch);
             }
 
             spriteBatch.End();
