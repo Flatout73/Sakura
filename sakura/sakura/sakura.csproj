@@ -77,6 +77,18 @@
     </Content>
     <Content Include="Content\Leaf.png" />
     <Content Include="Content\LeafHor.png" />
+    <Content Include="Content\kek.spritefont">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\kek.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\font.spritefont">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\font.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Content\Leaf.xnb" />
     <None Include="Content\LeafHor.xnb" />
     <None Include="Resources\AboutResources.txt" />
