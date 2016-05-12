@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using System;
+using System.Collections.Generic;
 
 namespace sakura
 {
@@ -17,10 +18,11 @@ namespace sakura
         Vector2 flower0Position;
         int resX, resY;
         static float kx = 1f, ky = 1f;
-        Vertex[] flowers;
+        Vertex[][] flowers;
         private TouchCollection gamePadState;
         private TouchCollection lastGamePadState;
         SpriteFont Font;
+        List<int> graph;
 
         public Game1()
         {
@@ -57,21 +59,43 @@ namespace sakura
             {
                 ky = (float)resY / (float)graphics.PreferredBackBufferWidth;
             }
-            flower0Position = new Vector2((int)(32 * kx + 20*kx), (int)(32 * kx + 20*kx));
-            flowers = new Vertex[8];
-            
-            
-                flowers[0] = new Vertex(flower0Position + new Vector2((64 + 44) * kx * 0, 0), kx, ky, true, false, false, true);
-                flowers[1] = new Vertex(flower0Position + new Vector2((64 + 44) * kx * 1, 0), kx, ky, true, false, true, false);
-                flowers[2] = new Vertex(flower0Position + new Vector2((64 + 44) * kx * 2, 0), kx, ky, true, false, false, true);
-                flowers[3] = new Vertex(flower0Position + new Vector2((64 + 44) * kx * 3, 0), kx, ky, true, false, false, false);
-                flowers[4] = new Vertex(flower0Position + new Vector2((64 + 44) * kx * 0, (64 + 44) * kx * 1), kx, ky, true, true, true, false);
-                flowers[5] = new Vertex(flower0Position + new Vector2((64 + 44) * kx * 1, (64 + 44) * kx * 1), kx, ky, false, true, false, true);
-                flowers[6] = new Vertex(flower0Position + new Vector2((64 + 44) * kx * 2, (64 + 44) * kx * 1), kx, ky, true, false, true, true);
-                flowers[7] = new Vertex(flower0Position + new Vector2((64 + 44) * kx * 3, (64 + 44) * kx * 1), kx, ky, true, true, false, false);
+            flower0Position = new Vector2((int)(35 * kx + 30*kx), (int)(35 * kx + 30*kx));
+            flowers = new Vertex[8][];
+
+            for (int i = 0; i < 8; i++)
+            {
+                flowers[i] = new Vertex[4];
+            }
+
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    flowers[i][j] = null;
+                }
+            }
+                flowers[0][0] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 0, 0), kx, ky, true, false, false, true);
+                flowers[0][1] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 1, 0), kx, ky, true, false, true, false);
+                flowers[0][2] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 2, 0), kx, ky, true, false, false, true);
+                flowers[0][3] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 3, 0), kx, ky, true, false, false, false);
+                flowers[1][0] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 0, (70 + 50) * kx * 1), kx, ky, true, true, true, false);
+                flowers[1][1] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 1, (70 + 50) * kx * 1), kx, ky, false, true, false, true);
+                flowers[1][2] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 2, (70 + 50) * kx * 1), kx, ky, true, false, true, true);
+                flowers[1][3] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 3, (70 + 50) * kx * 1), kx, ky, true, true, false, false);
 
 
+            int k = 0;
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    if (flowers[i][j] != null)
+                        k++;
+                }
+            }
 
+            graph = new List<int>(10);
+            graph.Add(k);
         }
 
         /// <summary>
@@ -85,8 +109,8 @@ namespace sakura
 
             closedFlower = Content.Load<Texture2D>("fl");
             Leaf = Content.Load<Texture2D>("Leaf");
-            LeafHor = Content.Load<Texture2D>("LeafHor");
-            Font = Content.Load<SpriteFont>("font");
+         //   LeafHor = Content.Load<Texture2D>("LeafHor");
+         //   Font = Content.Load<SpriteFont>("font");
             // TODO: use this.Content to load your game content here
         }
 
@@ -113,6 +137,43 @@ namespace sakura
 
             // TODO: Add your update logic here
 
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    if (flowers[i][j] != null)
+                    {
+
+
+                        if (i - 1 > -1 && flowers[i-1][j] != null)
+                            if (flowers[i][j]._edgeUp && flowers[i - 1][j]._edgeDown)
+                            {
+                                graph.Add(4 * i + j - 4);
+                            }
+
+                        if (j - 1 > -1 && flowers[i][j-1] != null)
+                            if (flowers[i][j]._edgeLeft && flowers[i][j - 1]._edgeRight)
+                            {
+                                graph.Add(i * 4 + j - 1);
+                            }
+
+                        if (j + 1 < 4 && flowers[i][j+1] != null)
+                            if (flowers[i][j]._edgeRight && flowers[i][j + 1]._edgeLeft)
+                            {
+                                graph.Add(i * 4 + j + 1);
+                            }
+
+                        if (i + 1 < 4 && flowers[i+1][j] != null)
+                            if (flowers[i][j]._edgeDown && flowers[i + 1][j]._edgeUp)
+                            {
+                                graph.Add(4 * i + j + 4);
+                            }
+
+                        graph.Add(-1);
+                    }
+                }
+            }
+
             base.Update(gameTime);
         }
 
@@ -137,10 +198,14 @@ namespace sakura
 
             for (int i = 0; i < 8; i++)
             {
-                flowers[i].Draw(closedFlower, Leaf, LeafHor, spriteBatch);
+                for (int j = 0; j < 4; j++)
+                {
+                    if(flowers[i][j] != null)
+                    flowers[i][j].Draw(closedFlower, Leaf, spriteBatch);
+                }
             }
 
-            spriteBatch.DrawString(Font, "You win!", new Vector2(200*kx, 200*kx), Color.White);
+            //spriteBatch.DrawString(Font, "You win!", new Vector2(200*kx, 200*kx), Color.White);
 
             spriteBatch.End();
 
