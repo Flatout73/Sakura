@@ -85,7 +85,7 @@ namespace sakura
             this.kx = kx;
             this.ky = ky;
 
-            turn = new Button(p.X, p.Y, kx);
+            turn = new Button(p.X, p.Y, kx, new Vector2(flowerWidth, flowerHeight));
         }
 
         public void Tap()

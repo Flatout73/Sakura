@@ -10,11 +10,11 @@ namespace sakura
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class Game1 : Microsoft.Xna.Framework.Game
+    public class Game : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Texture2D closedFlower, Leaf, LeafHor;
+        Texture2D closedFlower, Leaf, LeafHor, beginTexture, exitTexture;
         Vector2 flower0Position;
         int resX, resY;
         static float kx = 1f, ky = 1f;
@@ -24,7 +24,12 @@ namespace sakura
         SpriteFont Font;
         List<int> graph;
 
-        public Game1()
+        Button ButtonBegin;
+        Button ButtonExit;
+
+        GameProcess GameProcess = new GameProcess();
+
+        public Game()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -96,6 +101,9 @@ namespace sakura
 
             graph = new List<int>(10);
             graph.Add(k);
+
+            GameProcess.NewGame();
+
         }
 
         /// <summary>
@@ -109,8 +117,13 @@ namespace sakura
 
             closedFlower = Content.Load<Texture2D>("fl");
             Leaf = Content.Load<Texture2D>("Leaf");
-         //   LeafHor = Content.Load<Texture2D>("LeafHor");
-         //   Font = Content.Load<SpriteFont>("font");
+            beginTexture = Content.Load<Texture2D>("Begin");
+            exitTexture = Content.Load<Texture2D>("Exit");
+
+            ButtonBegin = new Button(graphics.PreferredBackBufferWidth / 2f - beginTexture.Width / 2f, graphics.PreferredBackBufferHeight/2f - beginTexture.Height/2f, kx, new Vector2(100f, 60f));
+            ButtonExit = new Button(graphics.PreferredBackBufferWidth / 2f - beginTexture.Width / 2f, graphics.PreferredBackBufferHeight / 2f + 4f * beginTexture.Height, kx, new Vector2(100f, 60f));
+            //   LeafHor = Content.Load<Texture2D>("LeafHor");
+            //   Font = Content.Load<SpriteFont>("font");
             // TODO: use this.Content to load your game content here
         }
 
@@ -174,6 +187,15 @@ namespace sakura
                 }
             }
 
+            ButtonBegin.Process();
+            ButtonExit.Process();
+
+            if(ButtonExit.IsEnabled)
+            {
+                Exit();
+                ButtonExit.Reset();
+            }
+
             base.Update(gameTime);
         }
 
@@ -196,12 +218,27 @@ namespace sakura
                   spriteBatch.Draw(closedFlower, flower1, Color.White);
               }*/
 
-            for (int i = 0; i < 8; i++)
+            if(GameProcess.isMenuBegin == true)
             {
-                for (int j = 0; j < 4; j++)
+              
+                spriteBatch.Draw(beginTexture, new Vector2(ButtonBegin.x + beginTexture.Width / 2f, ButtonBegin.y + beginTexture.Height / 2f), null, Color.White, 0f, new Vector2(beginTexture.Width/2f, beginTexture.Height/2f), 100f / beginTexture.Width * kx, SpriteEffects.None, 0f);
+                spriteBatch.Draw(exitTexture, new Vector2(ButtonExit.x + exitTexture.Width / 2f, ButtonExit.y + exitTexture.Height / 2f), null, Color.White, 0f, new Vector2(exitTexture.Width / 2f, exitTexture.Height / 2f), 100f / exitTexture.Width * kx, SpriteEffects.None, 0f);
+                if (ButtonBegin.IsEnabled)
                 {
-                    if(flowers[i][j] != null)
-                    flowers[i][j].Draw(closedFlower, Leaf, spriteBatch);
+                    GameProcess.StartGame();
+                    ButtonBegin.Reset();
+                }
+            }
+
+            if (GameProcess.isGame)
+            {
+                for (int i = 0; i < 8; i++)
+                {
+                    for (int j = 0; j < 4; j++)
+                    {
+                        if (flowers[i][j] != null)
+                            flowers[i][j].Draw(closedFlower, Leaf, spriteBatch);
+                    }
                 }
             }
 

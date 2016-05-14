@@ -10,6 +10,8 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Microsoft.Xna.Framework.Input.Touch;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 
 namespace sakura
 {
@@ -23,7 +25,9 @@ namespace sakura
 
         float kx;
 
-        public Button(float x, float y, float kx)
+        Vector2 forScale;
+
+        public Button(float x, float y, float kx, Vector2 v)
         {
             this.x = x;
             this.y = y;
@@ -32,6 +36,8 @@ namespace sakura
             IsEnabled = false;
 
             this.kx = kx;
+
+            forScale = v;
         }
         
         public void Process()
@@ -44,7 +50,7 @@ namespace sakura
                 {
 
                 }
-                if((Touches[0].Position.X > x - 20) && (Touches[0].Position.X < x + 50 * kx) && (Touches[0].Position.Y > y - 20) &&(Touches[0].Position.Y < y + 50 * kx))
+                if((Touches[0].Position.X > x - 20 * kx) && (Touches[0].Position.X < x + forScale.X * kx) && (Touches[0].Position.Y > y - forScale.Y * kx) &&(Touches[0].Position.Y < y + 50 * kx))
                 {
                     IsPressed = true;
                 }

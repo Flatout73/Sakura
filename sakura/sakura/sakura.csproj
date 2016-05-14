@@ -60,12 +60,19 @@
   <ItemGroup>
     <Compile Include="Activity1.cs" />
     <Compile Include="Button.cs" />
-    <Compile Include="Game1.cs" />
+    <Compile Include="Game.cs" />
+    <Compile Include="GameProcess.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Vertex.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Begin.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Exit.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\fl.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -88,6 +95,12 @@
     </Content>
     <Content Include="Content\font.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Begin.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Exit.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Content\Leaf.xnb" />
     <None Include="Content\LeafHor.xnb" />
