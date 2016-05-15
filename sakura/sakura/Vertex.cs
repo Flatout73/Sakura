@@ -136,7 +136,7 @@ namespace sakura
             //   spriteBatch.Draw(textureFlower, position + new Vector2(textureFlower.Width/2, textureFlower.Height/2), 
             //     null, Color.White, (float)(Math.PI/ 2.0f) * (float)touches, new Vector2(textureFlower.Width / 2, textureFlower.Height / 2), 1 , SpriteEffects.None, 0f);
 
-            spriteBatch.Draw(textureFlower, position + new Vector2(textureFlower.Width / 2.0f + (float)flowerWidth * kx / 4.0f, textureFlower.Height / 2.0f + (float)flowerHeight * kx / 4.0f),
+			spriteBatch.Draw(textureFlower, position + new Vector2(textureFlower.Width / 2.0f + ((float)flowerWidth * kx / 2.0f - (float)flowerWidth/2.0f)/2.0f, textureFlower.Height / 2.0f + ((float)flowerHeight * kx / 2.0f - flowerWidth/2.0f)/2.0f),
                 null, Color.White, (float)(Math.PI / 2.0f) * (float)touches, new Vector2(textureFlower.Width / 2.0f, textureFlower.Height / 2.0f), (float)flowerWidth / (float)textureFlower.Width * kx, SpriteEffects.None, 0f);
 
             Rectangle rect = new Rectangle((int)(position.X + (float)flowerWidth * kx / 2.0f - (float)leafWidth * kx / 2.0f), (int)(position.Y - (float)leafHeight * kx), (int)((float)(leafWidth * kx)), (int)((float)leafHeight * kx));
