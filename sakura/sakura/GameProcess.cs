@@ -39,10 +39,14 @@ namespace sakura
         {
             isWin = true;
             isGame = false;
+            isMenuBegin = false;
+            isMenuLvlSelect = false;
         }
 
         public void LvlSelect()
         {
+            isGame = false;
+            isWin = false;
             isMenuBegin = false;
             isMenuLvlSelect = true;
         }
@@ -50,8 +54,9 @@ namespace sakura
         public void StartGame()
         {
             isGame = true;
+            isWin = false;
             isMenuLvlSelect = false;
-            isMenuBegin = false;
+            isMenuBegin = false; 
         }
     }
 }

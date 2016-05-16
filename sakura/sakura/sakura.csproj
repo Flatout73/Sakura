@@ -63,6 +63,7 @@
     <Compile Include="Button.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameProcess.cs" />
+    <Compile Include="Level.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Vertex.cs" />
@@ -103,6 +104,7 @@
     <Content Include="Content\Exit.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\lvl.png" />
     <None Include="Content\Leaf.xnb" />
     <None Include="Content\LeafHor.xnb" />
     <None Include="Resources\AboutResources.txt" />

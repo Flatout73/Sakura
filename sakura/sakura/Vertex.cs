@@ -30,6 +30,7 @@ namespace sakura
         bool edgeDownNew;
         bool edgeLeftNew;
 
+
         public bool _edgeUp
         {
            get
@@ -85,7 +86,7 @@ namespace sakura
             this.kx = kx;
             this.ky = ky;
 
-            turn = new Button(p.X, p.Y, kx, new Vector2(flowerWidth, flowerHeight));
+            turn = new Button(p.X, p.Y, kx, new Vector2(flowerWidth, flowerHeight), null);
         }
 
         public void Tap()

@@ -14,20 +14,32 @@ namespace sakura
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Texture2D closedFlower, Leaf, LeafHor, beginTexture, exitTexture;
+        Texture2D closedFlower, Leaf, LeafHor, beginTexture, exitTexture, lvlSelect;
+
         Vector2 flower0Position;
+        Vector2 lvl0position;
+
+        int lvli, lvlj;
+
         int resX, resY;
         static float kx = 1f, ky = 1f;
+
         Vertex[][] flowers;
+        Level[][] levels;
+
         private TouchCollection gamePadState;
         private TouchCollection lastGamePadState;
+
         SpriteFont Font;
+
         List<int> graph;
 
         Button ButtonBegin;
         Button ButtonExit;
 
         GameProcess GameProcess = new GameProcess();
+
+        
 
         public Game()
         {
@@ -87,7 +99,7 @@ namespace sakura
                 flowers[1][1] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 1, (70 + 50) * kx * 1), kx, ky, false, true, false, true);
                 flowers[1][2] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 2, (70 + 50) * kx * 1), kx, ky, true, false, true, true);
                 flowers[1][3] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 3, (70 + 50) * kx * 1), kx, ky, true, true, false, false);
-
+ 
 
             int k = 0;
             for (int i = 0; i < 8; i++)
@@ -104,6 +116,24 @@ namespace sakura
 
             GameProcess.NewGame();
 
+            lvl0position = new Vector2(28 * kx, 28 * kx);
+
+            levels = new Level[5][];
+            for(int i = 0; i < 5; i++)
+            {
+                levels[i] = new Level[4];
+            }
+            
+            for (int i = 0; i < 5; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    levels[i][j] = new Level(lvlSelect, new Vector2(lvl0position.X + j * 28 * kx + j * 100 * kx, lvl0position.Y + 28 * kx * i + 100 * i * kx), kx);
+                }
+            }
+
+            levels[0][0].Initilize(flowers);
+
         }
 
         /// <summary>
@@ -119,9 +149,11 @@ namespace sakura
             Leaf = Content.Load<Texture2D>("Leaf");
             beginTexture = Content.Load<Texture2D>("Begin");
             exitTexture = Content.Load<Texture2D>("Exit");
+            lvlSelect = Content.Load<Texture2D>("lvl");
 
-            ButtonBegin = new Button(graphics.PreferredBackBufferWidth / 2f - beginTexture.Width / 2f, graphics.PreferredBackBufferHeight/2f - beginTexture.Height/2f, kx, new Vector2(100f, 60f));
-            ButtonExit = new Button(graphics.PreferredBackBufferWidth / 2f - beginTexture.Width / 2f, graphics.PreferredBackBufferHeight / 2f + 4f * beginTexture.Height, kx, new Vector2(100f, 60f));
+
+            ButtonBegin = new Button(graphics.PreferredBackBufferWidth / 2f - beginTexture.Width / 2f, graphics.PreferredBackBufferHeight/2f - beginTexture.Height/2f, kx, new Vector2(100f, 60f), beginTexture);
+            ButtonExit = new Button(graphics.PreferredBackBufferWidth / 2f - beginTexture.Width / 2f, graphics.PreferredBackBufferHeight / 2f + 4f * beginTexture.Height, kx, new Vector2(100f, 60f), exitTexture);
             //   LeafHor = Content.Load<Texture2D>("LeafHor");
             //   Font = Content.Load<SpriteFont>("font");
             // TODO: use this.Content to load your game content here
@@ -196,6 +228,37 @@ namespace sakura
                 ButtonExit.Reset();
             }
 
+            if(GameProcess.isMenuLvlSelect)
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    for (int j = 0; j < 4; j++)
+                    {
+                        levels[i][j].button.Process();
+                    }
+                }
+            }
+
+            if (GameProcess.isMenuLvlSelect)
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    for (int j = 0; j < 4; j++)
+                    {
+                        if (levels[i][j].button.IsEnabled)
+                        {
+                            GameProcess.StartGame();
+                            lvli = i;
+                            lvlj = j;
+
+                            levels[i][j].button.Reset();
+                        }
+                    }
+                }
+            }
+
+
+
             base.Update(gameTime);
         }
 
@@ -225,20 +288,28 @@ namespace sakura
                 spriteBatch.Draw(exitTexture, new Vector2(ButtonExit.x + exitTexture.Width / 2f, ButtonExit.y + exitTexture.Height / 2f), null, Color.White, 0f, new Vector2(exitTexture.Width / 2f, exitTexture.Height / 2f), 100f / exitTexture.Width * kx, SpriteEffects.None, 0f);
                 if (ButtonBegin.IsEnabled)
                 {
-                    GameProcess.StartGame();
+                    GameProcess.LvlSelect();
                     ButtonBegin.Reset();
                 }
             }
 
-            if (GameProcess.isGame)
+          else  if (GameProcess.isMenuLvlSelect == true)
             {
-                for (int i = 0; i < 8; i++)
+                for (int i = 0; i < 5; i++)
                 {
                     for (int j = 0; j < 4; j++)
                     {
-                        if (flowers[i][j] != null)
-                            flowers[i][j].Draw(closedFlower, Leaf, spriteBatch);
+                        spriteBatch.Draw(lvlSelect, levels[i][j]._position + new Vector2(levels[i][j]._texture.Width / 2 * kx, levels[i][j]._texture.Height / 2 * kx), null, Color.White, 0f, new Vector2(levels[i][j]._texture.Width / 2, levels[i][j]._texture.Height / 2), 100f / levels[i][j]._texture.Width * kx, SpriteEffects.None, 0f);
                     }
+                }
+                
+            }
+
+           else if (GameProcess.isGame)
+            {
+                if(lvli == 0 && lvlj == 0)
+                {
+                    levels[0][0].Draw(closedFlower, Leaf, spriteBatch);
                 }
             }
 

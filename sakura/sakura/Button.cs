@@ -27,7 +27,9 @@ namespace sakura
 
         Vector2 forScale;
 
-        public Button(float x, float y, float kx, Vector2 v)
+        Texture2D texture;
+
+        public Button(float x, float y, float kx, Vector2 v, Texture2D t)
         {
             this.x = x;
             this.y = y;
@@ -38,6 +40,8 @@ namespace sakura
             this.kx = kx;
 
             forScale = v;
+
+            texture = t;
         }
         
         public void Process()
@@ -50,7 +54,7 @@ namespace sakura
                 {
 
                 }
-                if((Touches[0].Position.X > x - 20 * kx) && (Touches[0].Position.X < x + forScale.X * kx) && (Touches[0].Position.Y > y - forScale.Y * kx) &&(Touches[0].Position.Y < y + 50 * kx))
+                if((Touches[0].Position.X > x - 20 * kx) && (Touches[0].Position.X < x + forScale.X * kx) && (Touches[0].Position.Y > y - 20 * kx) &&(Touches[0].Position.Y < y + forScale.Y * kx))
                 {
                     IsPressed = true;
                 }
