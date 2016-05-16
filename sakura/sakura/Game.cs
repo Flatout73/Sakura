@@ -24,15 +24,13 @@ namespace sakura
         int resX, resY;
         static float kx = 1f, ky = 1f;
 
-        Vertex[][] flowers;
+        
         Level[][] levels;
 
         private TouchCollection gamePadState;
         private TouchCollection lastGamePadState;
 
         SpriteFont Font;
-
-        List<int> graph;
 
         Button ButtonBegin;
         Button ButtonExit;
@@ -77,14 +75,14 @@ namespace sakura
                 ky = (float)resY / (float)graphics.PreferredBackBufferWidth;
             }
             flower0Position = new Vector2((int)(35 * kx + 30*kx), (int)(35 * kx + 30*kx));
-            flowers = new Vertex[8][];
+            Vertex[][] flowers = new Vertex[7][];
 
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 7; i++)
             {
                 flowers[i] = new Vertex[4];
             }
 
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 7; i++)
             {
                 for (int j = 0; j < 4; j++)
                 {
@@ -99,20 +97,7 @@ namespace sakura
                 flowers[1][1] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 1, (70 + 50) * kx * 1), kx, ky, false, true, false, true);
                 flowers[1][2] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 2, (70 + 50) * kx * 1), kx, ky, true, false, true, true);
                 flowers[1][3] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 3, (70 + 50) * kx * 1), kx, ky, true, true, false, false);
- 
-
-            int k = 0;
-            for (int i = 0; i < 8; i++)
-            {
-                for (int j = 0; j < 4; j++)
-                {
-                    if (flowers[i][j] != null)
-                        k++;
-                }
-            }
-
-            graph = new List<int>(10);
-            graph.Add(k);
+      
 
             GameProcess.NewGame();
 
@@ -128,11 +113,11 @@ namespace sakura
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    levels[i][j] = new Level(lvlSelect, new Vector2(lvl0position.X + j * 28 * kx + j * 100 * kx, lvl0position.Y + 28 * kx * i + 100 * i * kx), kx);
+                    levels[i][j] = new Level(lvlSelect, new Vector2(lvl0position.X + j * 28 * kx + j * 100 * kx, lvl0position.Y + 28 * kx * i + 100 * i * kx), kx, GameProcess);
                 }
             }
 
-            levels[0][0].Initilize(flowers);
+            levels[0][0].Initilize(flowers);           
 
         }
 
@@ -182,42 +167,9 @@ namespace sakura
 
             // TODO: Add your update logic here
 
-            for (int i = 0; i < 8; i++)
-            {
-                for (int j = 0; j < 4; j++)
-                {
-                    if (flowers[i][j] != null)
-                    {
+            
 
-
-                        if (i - 1 > -1 && flowers[i-1][j] != null)
-                            if (flowers[i][j]._edgeUp && flowers[i - 1][j]._edgeDown)
-                            {
-                                graph.Add(4 * i + j - 4);
-                            }
-
-                        if (j - 1 > -1 && flowers[i][j-1] != null)
-                            if (flowers[i][j]._edgeLeft && flowers[i][j - 1]._edgeRight)
-                            {
-                                graph.Add(i * 4 + j - 1);
-                            }
-
-                        if (j + 1 < 4 && flowers[i][j+1] != null)
-                            if (flowers[i][j]._edgeRight && flowers[i][j + 1]._edgeLeft)
-                            {
-                                graph.Add(i * 4 + j + 1);
-                            }
-
-                        if (i + 1 < 4 && flowers[i+1][j] != null)
-                            if (flowers[i][j]._edgeDown && flowers[i + 1][j]._edgeUp)
-                            {
-                                graph.Add(4 * i + j + 4);
-                            }
-
-                        graph.Add(-1);
-                    }
-                }
-            }
+          
 
             ButtonBegin.Process();
             ButtonExit.Process();
@@ -257,7 +209,8 @@ namespace sakura
                 }
             }
 
-
+            if(GameProcess.isGame)
+            levels[lvli][lvlj].Update();
 
             base.Update(gameTime);
         }
