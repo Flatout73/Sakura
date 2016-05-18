@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Text;
 
@@ -32,6 +33,10 @@ namespace sakura
 
         List<int> comp;
 
+		Vector2 flower0Position;
+		Vector2[][] flowersPosition;
+
+		Random rnd;
 
         public Vector2 _position
         {
@@ -56,6 +61,31 @@ namespace sakura
             this.kx = kx;
             button = new Button(position.X, position.Y, kx, new Vector2(100 * kx, 100 * kx), texture);
             gameProcess = gm;
+			flower0Position = new Vector2((int)(35 * kx + 30*kx), (int)(35 * kx + 30*kx));
+
+			flowersPosition = new Vector2[7][];
+			for (int i = 0; i < 7; i++) 
+			{
+				flowersPosition [i] = new Vector2[4];
+			}
+			for (int i = 0; i < 7; i++) 
+			{
+				for (int j = 0; j < 4; j++)
+				{
+					flowersPosition [i] [j] = (flower0Position + new Vector2((70 + 50) * kx * j, (70 + 50) * kx * i));
+				}
+			}
+
+			graphsum = new int[28][];
+			for (int i = 0; i < 28; i++)
+			{
+				graphsum[i] = new int[4];
+			}
+
+			used = new bool[28];
+
+			comp = new List<int>(28);
+
         }
 
         public void Initilize(Vertex[][] fl)
@@ -71,7 +101,7 @@ namespace sakura
                         k++;
                 }
             }
-            graph = new List<int>(10);
+			   graph = new List<int>(10);
             graph.Add(k);
 
             graph2 = new int[7][][];
@@ -84,18 +114,43 @@ namespace sakura
                 }
             }
 
-            graphsum = new int[28][];
-            for (int i = 0; i < 28; i++)
-            {
-                graphsum[i] = new int[4];
-            }
-
-
-            used = new bool[28];
-
-            comp = new List<int>(28);
-
         }
+
+		public void Initilize(List<int> g) 
+		{
+			flowers = new Vertex[7][]; 
+
+			for (int i = 0; i < 7; i++) {
+				flowers [i] = new Vertex[4];
+			}
+
+			for (int i = 0; i < g.Count; i++) 
+			{
+				flowers [g[i] / 4] [g[i] % 4] = new Vertex(flowersPosition[g[i]/4][g[i]%4], kx, kx, false, false, false, false);
+			}
+
+			for (int i = 0; i < g.Count - 1; i++) {
+				if (g [i] - 4 == g [i + 1]) {
+					flowers [g [i] / 4] [g [i] % 4].edgeUp = true;
+					flowers [g [i + 1] / 4] [g [i + 1] % 4].edgeDown = true;
+				}
+
+				if (g [i] + 1 == g [i + 1]) {
+					flowers [g [i] / 4] [g [i] % 4].edgeRight = true;
+					flowers [g [i + 1] / 4] [g [i + 1] % 4].edgeLeft = true;
+				}
+
+				if (g [i] + 4 == g [i + 1]) {
+					flowers [g [i] / 4] [g [i] % 4].edgeDown = true;
+					flowers [g [i + 1] / 4] [g [i + 1] % 4].edgeUp = true;
+				}
+				if (g [i] - 1 == g [i + 1]) {
+					flowers [g [i] / 4] [g [i] % 4].edgeLeft = true;
+					flowers [g [i + 1] / 4] [g [i + 1] % 4].edgeRight = true;
+				}
+			}
+		}
+
 
         public void Update()
         {
@@ -115,8 +170,8 @@ namespace sakura
                         if (i - 1 > -1 && flowers[i - 1][j] != null)
                             if (flowers[i][j]._edgeUp && flowers[i - 1][j]._edgeDown)
                             {
-                                graph.Add(4 * i + j - 4);
-                                graph2[i][j][k] = 4 * i + j - 4;
+                     //           graph.Add(4 * i + j - 4);
+                   //             graph2[i][j][k] = 4 * i + j - 4;
                                 graphsum[4 * i + j][k] = 4 * i + j - 4;
                                 k++;
                             }
@@ -124,8 +179,8 @@ namespace sakura
                         if (j - 1 > -1 && flowers[i][j - 1] != null)
                             if (flowers[i][j]._edgeLeft && flowers[i][j - 1]._edgeRight)
                             {
-                                graph.Add(i * 4 + j - 1);
-                                graph2[i][j][k] = i * 4 + j - 1;
+                     //           graph.Add(i * 4 + j - 1);
+                   //             graph2[i][j][k] = i * 4 + j - 1;
                                 graphsum[4*i + j][k] = i * 4 + j - 1;
                                 k++;
                             }
@@ -133,8 +188,8 @@ namespace sakura
                         if (j + 1 < 4 && flowers[i][j + 1] != null)
                             if (flowers[i][j]._edgeRight && flowers[i][j + 1]._edgeLeft)
                             {
-                                graph.Add(i * 4 + j + 1);
-                                graph2[i][j][k] = i * 4 + j + 1;
+                         //       graph.Add(i * 4 + j + 1);
+                       //         graph2[i][j][k] = i * 4 + j + 1;
                                 graphsum[4*i + j][k] = i * 4 + j + 1;
                                 k++;
                             }
@@ -142,14 +197,14 @@ namespace sakura
                         if (i + 1 < 4 && flowers[i + 1][j] != null)
                             if (flowers[i][j]._edgeDown && flowers[i + 1][j]._edgeUp)
                             {
-                                graph.Add(4 * i + j + 4);
-                                graph2[i][j][k] = 4 * i + j + 4;
+                     //           graph.Add(4 * i + j + 4);
+                   //             graph2[i][j][k] = 4 * i + j + 4;
                                 graphsum[4*i + j][k] = 4 * i + j + 4;
                                 k++;
 
                             }
 
-                        graph.Add(-1);
+                 //       graph.Add(-1);
                     }
                     else
                     {
@@ -180,7 +235,8 @@ namespace sakura
             }
             if (flag)
             {
-                gameProcess.NewGame();
+               // gameProcess.NewGame();
+			//	gameProcess.WinGame();
             }
 
         }
@@ -198,22 +254,38 @@ namespace sakura
         }
 
         void dfs(int v)
-        {
-            int to = -1;
-            used[v] = true;
-            comp.Add(v);
-            for (int i = 0; i < graphsum[v].Length; i++)
-            {
-                if (graphsum[v][i] != -1)
-                {
-                    to = graphsum[v][i];
-                    if (!used[to])
-                    {
-                        dfs(to);
-                    }
-                }
-            } 
-        }
+		{
+				int to = -1;
+				used [v] = true;
+				comp.Add (v);
+			if (graphsum [v] != null) {
+				for (int i = 0; i < graphsum [v].Length; i++) {
+					if (graphsum [v] [i] != -1) {
+						to = graphsum [v] [i];
+						if (!used [to]) {
+							dfs (to);
+						}
+					}
+				} 
+			} else {
+				dfs (v + 1);
+			}
+		}
+
+		public void Mix() 
+		{
+			rnd = new Random (1);
+			for (int i = 0; i < 7; i++) {
+				for (int j = 0; j < 4; j++) {
+			
+					int r = rnd.Next (1, 4);
+					for (int l = 0; l < r; l++) {
+						flowers [i] [j].Tap ();
+					}
+
+				}
+			}
+		}
 
     }
 }

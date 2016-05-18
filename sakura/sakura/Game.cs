@@ -117,8 +117,11 @@ namespace sakura
                 }
             }
 
-            levels[0][0].Initilize(flowers);           
+            levels[0][0].Initilize(flowers);  
 
+			Generator gen = new Generator(4);
+			levels [0] [1].Initilize (gen._graph);
+			//levels [0] [1].Mix ();
         }
 
         /// <summary>
@@ -134,7 +137,7 @@ namespace sakura
             Leaf = Content.Load<Texture2D>("Leaf");
             beginTexture = Content.Load<Texture2D>("Begin");
             exitTexture = Content.Load<Texture2D>("Exit");
-            lvlSelect = Content.Load<Texture2D>("lvl");
+            lvlSelect = Content.Load<Texture2D>("fl");
 
 
             ButtonBegin = new Button(graphics.PreferredBackBufferWidth / 2f - beginTexture.Width / 2f, graphics.PreferredBackBufferHeight/2f - beginTexture.Height/2f, kx, new Vector2(100f, 60f), beginTexture);
@@ -234,37 +237,27 @@ namespace sakura
                   spriteBatch.Draw(closedFlower, flower1, Color.White);
               }*/
 
-            if(GameProcess.isMenuBegin == true)
-            {
+			if (GameProcess.isMenuBegin == true) {
               
-                spriteBatch.Draw(beginTexture, new Vector2(ButtonBegin.x + beginTexture.Width / 2f, ButtonBegin.y + beginTexture.Height / 2f), null, Color.White, 0f, new Vector2(beginTexture.Width/2f, beginTexture.Height/2f), 100f / beginTexture.Width * kx, SpriteEffects.None, 0f);
-                spriteBatch.Draw(exitTexture, new Vector2(ButtonExit.x + exitTexture.Width / 2f, ButtonExit.y + exitTexture.Height / 2f), null, Color.White, 0f, new Vector2(exitTexture.Width / 2f, exitTexture.Height / 2f), 100f / exitTexture.Width * kx, SpriteEffects.None, 0f);
-                if (ButtonBegin.IsEnabled)
-                {
-                    GameProcess.LvlSelect();
-                    ButtonBegin.Reset();
-                }
-            }
-
-          else  if (GameProcess.isMenuLvlSelect == true)
-            {
-                for (int i = 0; i < 5; i++)
-                {
-                    for (int j = 0; j < 4; j++)
-                    {
-                        spriteBatch.Draw(lvlSelect, levels[i][j]._position + new Vector2(levels[i][j]._texture.Width / 2 * kx, levels[i][j]._texture.Height / 2 * kx), null, Color.White, 0f, new Vector2(levels[i][j]._texture.Width / 2, levels[i][j]._texture.Height / 2), 100f / levels[i][j]._texture.Width * kx, SpriteEffects.None, 0f);
-                    }
-                }
+				spriteBatch.Draw (beginTexture, new Vector2 (ButtonBegin.x + beginTexture.Width / 2f, ButtonBegin.y + beginTexture.Height / 2f), null, Color.White, 0f, new Vector2 (beginTexture.Width / 2f, beginTexture.Height / 2f), 100f / beginTexture.Width * kx, SpriteEffects.None, 0f);
+				spriteBatch.Draw (exitTexture, new Vector2 (ButtonExit.x + exitTexture.Width / 2f, ButtonExit.y + exitTexture.Height / 2f), null, Color.White, 0f, new Vector2 (exitTexture.Width / 2f, exitTexture.Height / 2f), 100f / exitTexture.Width * kx, SpriteEffects.None, 0f);
+				if (ButtonBegin.IsEnabled) {
+					GameProcess.LvlSelect ();
+					ButtonBegin.Reset ();
+				}
+			} else if (GameProcess.isMenuLvlSelect == true) {
+				for (int i = 0; i < 5; i++) {
+					for (int j = 0; j < 4; j++) {
+						spriteBatch.Draw (lvlSelect, levels [i] [j]._position + new Vector2 (levels [i] [j]._texture.Width / 2 * kx, levels [i] [j]._texture.Height / 2 * kx), null, Color.White, 0f, new Vector2 (levels [i] [j]._texture.Width / 2, levels [i] [j]._texture.Height / 2), 100f / levels [i] [j]._texture.Width * kx, SpriteEffects.None, 0f);
+					}
+				}
                 
-            }
+			} else if (GameProcess.isGame) {
+				levels [lvli] [lvlj].Draw (closedFlower, Leaf, spriteBatch);
 
-           else if (GameProcess.isGame)
-            {
-                if(lvli == 0 && lvlj == 0)
-                {
-                    levels[0][0].Draw(closedFlower, Leaf, spriteBatch);
-                }
-            }
+			} else if (GameProcess.isWin) {
+				spriteBatch.Draw (exitTexture, new Vector2 (resX / 2, resY / 2), Color.White);
+			}
 
             //spriteBatch.DrawString(Font, "You win!", new Vector2(200*kx, 200*kx), Color.White);
 

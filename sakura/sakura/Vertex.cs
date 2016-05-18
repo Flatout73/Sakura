@@ -20,10 +20,10 @@ namespace sakura
     class Vertex
     {
         Vector2 position;
-        bool edgeUp;
-        bool edgeRight;
-        bool edgeDown;
-        bool edgeLeft;
+		public bool edgeUp;
+        public bool edgeRight;
+        public bool edgeDown;
+        public bool edgeLeft;
 
         bool edgeUpNew;
         bool edgeRightNew;
