@@ -147,8 +147,8 @@ namespace sakura
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            closedFlower = Content.Load<Texture2D>("fl");
-            Leaf = Content.Load<Texture2D>("Leaf");
+            closedFlower = Content.Load<Texture2D>("FlowerOfSakura");
+            Leaf = Content.Load<Texture2D>("Branchs");
             beginTexture = Content.Load<Texture2D>("Begin");
             exitTexture = Content.Load<Texture2D>("Exit");
             lvlSelect = Content.Load<Texture2D>("lvl");
@@ -251,10 +251,12 @@ namespace sakura
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
-            spriteBatch.Begin();
+            GraphicsDevice.Clear(Color.AliceBlue); // заполнить фон
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied); // установить последовательный порядок отрисовки объектов
+
+
+
             /*  if (touch)
               {
                   spriteBatch.Draw(closedFlower, flower1 + new Vector2(closedFlower.Width / 2, closedFlower.Height / 2), null, Color.White, (float)(Math.PI / 2.0f), new Vector2(closedFlower.Width / 2, closedFlower.Height / 2), 1, SpriteEffects.None, 0f);
@@ -264,7 +266,7 @@ namespace sakura
                   spriteBatch.Draw(closedFlower, flower1, Color.White);
               }*/
 
-			if (gameProcess.isMenuBegin == true) {
+            if (gameProcess.isMenuBegin == true) {
               
 				spriteBatch.Draw (beginTexture, new Vector2 (ButtonBegin.x + beginTexture.Width / 2f, ButtonBegin.y + beginTexture.Height / 2f), null, Color.White, 0f, new Vector2 (beginTexture.Width / 2f, beginTexture.Height / 2f), 100f / beginTexture.Width * kx, SpriteEffects.None, 0f);
 				spriteBatch.Draw (exitTexture, new Vector2 (ButtonExit.x + exitTexture.Width / 2f, ButtonExit.y + exitTexture.Height / 2f), null, Color.White, 0f, new Vector2 (exitTexture.Width / 2f, exitTexture.Height / 2f), 100f / exitTexture.Width * kx, SpriteEffects.None, 0f);

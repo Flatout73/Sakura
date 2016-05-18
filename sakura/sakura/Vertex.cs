@@ -156,7 +156,7 @@ namespace sakura
             rect = new Rectangle((int)(position.X + flowerWidth * kx / 2 - leafWidth * kx / 2), (int)(position.Y + flowerHeight * kx), (int)((float)(leafWidth * kx)), (int)((float)(leafHeight * kx)));
             if (edgeDown)
               spriteBatch.Draw(textureLeaf, /*position + new Vector2(textureFlower.Width / 2 - textureLeaf.Width / 2, textureFlower.Height)*/ rect,
-                null, Color.White, 0f, Vector2.Zero, SpriteEffects.FlipHorizontally, 0f);
+                null, Color.White, 0f, Vector2.Zero, SpriteEffects.FlipVertically, 0f);
 
           //  rect = new Rectangle((int)Math.Round(position.X - leafHeight * kx), (int)Math.Round(position.Y + 44 * kx / 2 - (float)leafWidth * kx / 2), (int)((float)leafHeight * kx) + 1, (int)((float)leafWidth * kx) + 1);
           //   if (edgeLeft)
