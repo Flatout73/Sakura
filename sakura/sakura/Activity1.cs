@@ -15,13 +15,17 @@ namespace sakura
         , ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.Keyboard | ConfigChanges.KeyboardHidden | ConfigChanges.ScreenSize)]
     public class Activity1 : Microsoft.Xna.Framework.AndroidGameActivity
     {
+        Game g;
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            var g = new Game();
+            g = new Game();
             SetContentView((View)g.Services.GetService(typeof(View)));
             g.Run();
         }
+        
     }
+
 }
 

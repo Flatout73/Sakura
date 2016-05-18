@@ -38,6 +38,9 @@ namespace sakura
 
 		Random rnd;
 
+        public const int countFlowersWidth = 4;
+        public const int countFlowersHeight = 7;
+
         public Vector2 _position
         {
             get
@@ -129,26 +132,35 @@ namespace sakura
 				flowers [g[i] / 4] [g[i] % 4] = new Vertex(flowersPosition[g[i]/4][g[i]%4], kx, kx, false, false, false, false);
 			}
 
-			for (int i = 0; i < g.Count - 1; i++) {
-				if (g [i] - 4 == g [i + 1]) {
-					flowers [g [i] / 4] [g [i] % 4].edgeUp = true;
-					flowers [g [i + 1] / 4] [g [i + 1] % 4].edgeDown = true;
-				}
+            for (int i = 0; i < g.Count; i++)
+            {
+                for (int j = 0; j < g.Count; j++)
+                {
 
-				if (g [i] + 1 == g [i + 1]) {
-					flowers [g [i] / 4] [g [i] % 4].edgeRight = true;
-					flowers [g [i + 1] / 4] [g [i + 1] % 4].edgeLeft = true;
-				}
+                    if (g[i] - 4 == g[j])
+                    {
+                        flowers[g[i] / 4][g[i] % 4].edgeUp = true;
+                        flowers[g[j] / 4][g[j] % 4].edgeDown = true;
+                    }
 
-				if (g [i] + 4 == g [i + 1]) {
-					flowers [g [i] / 4] [g [i] % 4].edgeDown = true;
-					flowers [g [i + 1] / 4] [g [i + 1] % 4].edgeUp = true;
-				}
-				if (g [i] - 1 == g [i + 1]) {
-					flowers [g [i] / 4] [g [i] % 4].edgeLeft = true;
-					flowers [g [i + 1] / 4] [g [i + 1] % 4].edgeRight = true;
-				}
-			}
+                    if (g[i] + 1 == g[j])
+                    {
+                        flowers[g[i] / 4][g[i] % 4].edgeRight = true;
+                        flowers[g[j] / 4][g[j] % 4].edgeLeft = true;
+                    }
+
+                    if (g[i] + 4 == g[j])
+                    {
+                        flowers[g[i] / 4][g[i] % 4].edgeDown = true;
+                        flowers[g[j] / 4][g[j] % 4].edgeUp = true;
+                    }
+                    if (g[i] - 1 == g[j])
+                    {
+                        flowers[g[i] / 4][g[i] % 4].edgeLeft = true;
+                        flowers[g[j] / 4][g[j] % 4].edgeRight = true;
+                    }
+                }
+            }
 		}
 
 
@@ -194,7 +206,7 @@ namespace sakura
                                 k++;
                             }
 
-                        if (i + 1 < 4 && flowers[i + 1][j] != null)
+                        if (i + 1 < 7 && flowers[i + 1][j] != null)
                             if (flowers[i][j]._edgeDown && flowers[i + 1][j]._edgeUp)
                             {
                      //           graph.Add(4 * i + j + 4);
@@ -235,8 +247,7 @@ namespace sakura
             }
             if (flag)
             {
-               // gameProcess.NewGame();
-			//	gameProcess.WinGame();
+				gameProcess.WinGame();
             }
 
         }
@@ -274,12 +285,13 @@ namespace sakura
 
 		public void Mix() 
 		{
-			rnd = new Random (1);
+			rnd = new Random (4);
 			for (int i = 0; i < 7; i++) {
 				for (int j = 0; j < 4; j++) {
 			
 					int r = rnd.Next (1, 4);
 					for (int l = 0; l < r; l++) {
+                        if(flowers[i][j] != null)
 						flowers [i] [j].Tap ();
 					}
 

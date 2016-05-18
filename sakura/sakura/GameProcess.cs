@@ -12,7 +12,7 @@ using Android.Widget;
 
 namespace sakura
 {
-    class GameProcess
+   public class GameProcess
     {
         public bool isGame;
         public bool isWin;

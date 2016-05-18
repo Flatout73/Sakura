@@ -105,7 +105,9 @@
     <Content Include="Content\Exit.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\lvl.png" />
+    <Content Include="Content\lvl.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Content\Leaf.xnb" />
     <None Include="Content\LeafHor.xnb" />
     <None Include="Resources\AboutResources.txt" />
