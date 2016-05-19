@@ -5,7 +5,7 @@ using Android.Views;
 
 namespace sakura
 {
-    [Activity(Label = "sakura"
+    [Activity(Label = "Branch of Sakura"
         , MainLauncher = true
         , Icon = "@drawable/icon"
         , Theme = "@style/Theme.Splash"

@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sakura", "sakura\sakura.csproj", "{207C51C8-CAFF-4B9A-9903-543022FC10D8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Branch of Sakura", "sakura\Branch of Sakura.csproj", "{207C51C8-CAFF-4B9A-9903-543022FC10D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -54,7 +54,7 @@ namespace sakura
                 {
 
                 }
-                if((Touches[0].Position.X > x - 20 * kx) && (Touches[0].Position.X < x + forScale.X * kx) && (Touches[0].Position.Y > y - 20 * kx) &&(Touches[0].Position.Y < y + forScale.Y * kx))
+                if ((Touches[0].Position.X > x - 20f * kx) && (Touches[0].Position.X < x + (float)(forScale.X + 20f) * kx) && (Touches[0].Position.Y > y - 20f * kx) &&(Touches[0].Position.Y < y + (float)(forScale.Y + 20f) * kx))
                 {
                     IsPressed = true;
                 }
