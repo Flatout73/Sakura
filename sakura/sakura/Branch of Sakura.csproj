@@ -98,7 +98,9 @@
     <Content Include="Content\lvl.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\NextLevel.png" />
     <Content Include="Content\sakura and bird.jpg" />
+    <Content Include="Content\sakuraLevels.png" />
     <Content Include="Content\sakuraw.tif" />
     <Content Include="Content\sakurwave.tif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -107,14 +109,13 @@
     <Content Include="Content\SelectLevel.png" />
     <Content Include="Content\SelectLevel2.png" />
     <Content Include="Content\Start.png" />
+    <AndroidResource Include="Resources\Drawable\Icon.png" />
+    <None Include="Content\NumberOfLevel.xnb" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Values\Strings.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\Drawable\Icon.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\Layout\" />

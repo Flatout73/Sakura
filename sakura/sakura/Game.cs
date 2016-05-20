@@ -14,7 +14,8 @@ namespace sakura
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Texture2D closedFlower, Leaf, LeafHor, selectTexture, exitTexture, lvlSelect, background, startTexture, backGroundOfLevel;
+        Texture2D closedFlower, Leaf, LeafHor, selectTexture, exitTexture, lvlSelect, background, startTexture, backGroundOfLevel, nextTexture;
+        SpriteFont font;
 
         Vector2 flower0Position;
         Vector2 lvl0position;
@@ -37,6 +38,7 @@ namespace sakura
         Button ButtonSelect;
         Button ButtonExit;
         Button ButtonStart;
+        Button ButtonNext;
 
        public GameProcess gameProcess = new GameProcess();
 
@@ -82,9 +84,10 @@ namespace sakura
             }
 
 
-            ButtonSelect = new Button((float)resX / 2f - (float)selectTexture.Width*(256f * kx / (float)selectTexture.Width) / 2f, (float)resY / 2f - (selectTexture.Height * (256f *kx / (float)selectTexture.Width) / 2f), kx, new Vector2(selectTexture.Width * (256f * kx / (float)selectTexture.Width), selectTexture.Height * (256f * kx / (float)selectTexture.Width)), selectTexture);
-            ButtonExit = new Button(resX/ 2f - exitTexture.Width * (256f * kx / (float)exitTexture.Width) / 2f, resY / 2f + (float)exitTexture.Height * (256f * kx / (float)exitTexture.Width), kx, new Vector2(exitTexture.Width * (256f * kx / (float)exitTexture.Width), exitTexture.Height * (256f / (float)exitTexture.Width)), exitTexture);
-            ButtonStart = new Button(resX/2f - startTexture.Width * (256f * kx / (float)exitTexture.Width) / 2f, resY / 2f - 3f * (float)startTexture.Height * (256f * kx / (float)startTexture.Width), kx, new Vector2(startTexture.Width * (256f * kx / (float)startTexture.Width), startTexture.Height * (256f / (float)startTexture.Width)), startTexture);
+            ButtonSelect = new Button((float)resX / 2f - (float)selectTexture.Width*(256f * kx / (float)selectTexture.Width) / 2f, (float)resY / 2f - (selectTexture.Height * (256f *kx / (float)selectTexture.Width) / 2f), kx, new Vector2(selectTexture.Width * (256f / (float)selectTexture.Width), selectTexture.Height * (256f / (float)selectTexture.Width)), selectTexture);
+            ButtonExit = new Button(resX/ 2f - exitTexture.Width * (256f * kx / (float)exitTexture.Width) / 2f, resY / 2f + (float)exitTexture.Height * (256f * kx / (float)exitTexture.Width), kx, new Vector2(exitTexture.Width * (256f / (float)exitTexture.Width), exitTexture.Height * (256f / (float)exitTexture.Width)), exitTexture);
+            ButtonStart = new Button(resX/2f - startTexture.Width * (256f * kx / (float)exitTexture.Width) / 2f, resY / 2f - 3f * (float)startTexture.Height * (256f * kx / (float)startTexture.Width), kx, new Vector2(startTexture.Width * (256f / (float)startTexture.Width), startTexture.Height * (256f / (float)startTexture.Width)), startTexture);
+            ButtonNext = new Button((float)resX / 2f - (float)nextTexture.Width * (256f * kx / (float)nextTexture.Width) / 2f, (float)resY / 2f - (nextTexture.Height * (256f * kx / (float)nextTexture.Width) / 2f), kx, new Vector2(nextTexture.Width * (256f / (float)nextTexture.Width), nextTexture.Height * (256f / (float)nextTexture.Width)), nextTexture);
 
             flower0Position = new Vector2((int)(35 * kx + 30*kx), (int)(35 * kx + 30*kx));
             flowers = new Vertex[7][];
@@ -162,9 +165,11 @@ namespace sakura
             startTexture = Content.Load<Texture2D>("Start");  // Кнопка Start
             selectTexture = Content.Load<Texture2D>("SelectLevel2"); // Кнопка Select Level
             exitTexture = Content.Load<Texture2D>("ExitFl");
-            lvlSelect = Content.Load<Texture2D>("lvl");
+            lvlSelect = Content.Load<Texture2D>("sakuraLevels");
             background = Content.Load<Texture2D>("sakuraw");
             backGroundOfLevel = Content.Load<Texture2D>("sakura and bird");
+            nextTexture = Content.Load<Texture2D>("NextLevel");
+            font = Content.Load<SpriteFont>("NumberOfLevel");
 
             //   LeafHor = Content.Load<Texture2D>("LeafHor");
             //   Font = Content.Load<SpriteFont>("font");
@@ -218,13 +223,12 @@ namespace sakura
 
 
             // TODO: Add your update logic here
-
-            ButtonSelect.Process();
-            ButtonStart.Process();
-            ButtonExit.Process();
-
+          
             if (gameProcess.isMenuBegin)
             {
+                ButtonSelect.Process();
+                ButtonStart.Process();
+                ButtonExit.Process();
                 if (ButtonExit.IsEnabled)
                 {
                     Exit();
@@ -272,8 +276,36 @@ namespace sakura
                 }
             }
 
-            if(gameProcess.isGame)
-            levels[lvli][lvlj].Update();
+            if(gameProcess.isWin)
+            {
+                ButtonExit.Process();
+                ButtonNext.Process();
+
+                if(ButtonExit.IsEnabled)
+                {                
+                    Exit();
+                    ButtonExit.Reset();
+                }
+                if(ButtonNext.IsEnabled)
+                {
+                    if(lvli % 4 != 3)
+                    {
+                        lvli++;
+                    }
+                    else
+                    {
+                        lvlj++;
+                        lvli = 0;
+                    }
+                    gameProcess.StartGame();
+                    ButtonNext.Reset();
+                }
+            }
+
+            if (gameProcess.isGame)
+            {
+                levels[lvli][lvlj].Update();
+            }
 
             base.Update(gameTime);
         }
@@ -309,23 +341,30 @@ namespace sakura
               }*/
 
             if (gameProcess.isMenuBegin == true) {
-              
-				spriteBatch.Draw (selectTexture, new Vector2 (resX/2f, resY/2f), null, Color.White, 0f, new Vector2 (selectTexture.Width / 2f, selectTexture.Height / 2f), (256f * kx / (float)selectTexture.Width), SpriteEffects.None, 0f);
-				spriteBatch.Draw (exitTexture, new Vector2 (resX / 2f, ButtonExit.y + exitTexture.Height * (256f * kx / (float)exitTexture.Width) / 2f), null, Color.White, 0f, new Vector2 (exitTexture.Width / 2f, exitTexture.Height / 2f), (256f * kx / (float)exitTexture.Width), SpriteEffects.None, 0f);
-                spriteBatch.Draw(startTexture, new Vector2(resX/2f, ButtonStart.y + startTexture.Height * (256f * kx / (float)startTexture.Width) / 2f), null, Color.White, 0f, new Vector2(startTexture.Width / 2f, startTexture.Height / 2f), (256f * kx / (float)startTexture.Width), SpriteEffects.None, 0f);          
-			} else if (gameProcess.isMenuLvlSelect == true) {
-				for (int i = 0; i < 5; i++) {
-					for (int j = 0; j < 4; j++) {
-						spriteBatch.Draw (lvlSelect, levels [i] [j]._position + new Vector2 (levels [i] [j]._texture.Width / 2 * kx, levels [i] [j]._texture.Height / 2 * kx), null, Color.White, 0f, new Vector2 (levels [i] [j]._texture.Width / 2, levels [i] [j]._texture.Height / 2), 100f / levels [i] [j]._texture.Width * kx, SpriteEffects.None, 0f);
-					}
-				}
-                
-			} else if (gameProcess.isGame) {
-				levels [lvli] [lvlj].Draw (closedFlower, Leaf, spriteBatch);
 
-			} else if (gameProcess.isWin) {
-				spriteBatch.Draw (exitTexture, new Vector2 (resX / 2, resY / 2), Color.White);
-			}
+                spriteBatch.Draw(selectTexture, new Vector2(resX / 2f, resY / 2f), null, Color.White, 0f, new Vector2(selectTexture.Width / 2f, selectTexture.Height / 2f), (256f * kx / (float)selectTexture.Width), SpriteEffects.None, 0f);
+                spriteBatch.Draw(exitTexture, new Vector2(resX / 2f, ButtonExit.y + exitTexture.Height * (256f * kx / (float)exitTexture.Width) / 2f), null, Color.White, 0f, new Vector2(exitTexture.Width / 2f, exitTexture.Height / 2f), (256f * kx / (float)exitTexture.Width), SpriteEffects.None, 0f);
+                spriteBatch.Draw(startTexture, new Vector2(resX / 2f, ButtonStart.y + startTexture.Height * (256f * kx / (float)startTexture.Width) / 2f), null, Color.White, 0f, new Vector2(startTexture.Width / 2f, startTexture.Height / 2f), (256f * kx / (float)startTexture.Width), SpriteEffects.None, 0f);
+
+            } else if (gameProcess.isMenuLvlSelect == true) {
+                Rectangle recrLvl;
+                Vector2 centre;
+                for (int i = 0; i < 5; i++) {
+                    for (int j = 0; j < 4; j++) {
+                        recrLvl = new Rectangle((int)(lvl0position.X + j * 28 * kx + j * 100 * kx), (int)(lvl0position.Y + 28 * kx * i + 100 * i * kx), (int)(100 * kx), (int)(100 * kx));
+                        spriteBatch.Draw(lvlSelect, recrLvl, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
+                        centre = font.MeasureString(String.Format("{0}", i * 4 + j + 1))/ 2f;
+                        spriteBatch.DrawString(font, String.Format("{0}", i*4+j + 1), new Vector2(recrLvl.X + 50f*kx, recrLvl.Y + 50f*kx), Color.Coral, 0f, centre , kx, SpriteEffects.None, 0f);
+                    }
+                }
+
+            } else if (gameProcess.isGame) {
+                levels[lvli][lvlj].Draw(closedFlower, Leaf, spriteBatch);
+
+            } else if (gameProcess.isWin) {
+                spriteBatch.Draw(nextTexture, new Vector2(ButtonNext.x, ButtonNext.y), null, Color.White, 0f, Vector2.Zero, (256f * kx / (float)nextTexture.Width), SpriteEffects.None, 0f);
+                spriteBatch.Draw(exitTexture, new Vector2(resX / 2f, ButtonExit.y + exitTexture.Height * (256f * kx / (float)exitTexture.Width) / 2f), null, Color.White, 0f, new Vector2(exitTexture.Width / 2f, exitTexture.Height / 2f), (256f * kx / (float)exitTexture.Width), SpriteEffects.None, 0f);
+            }
 
             //spriteBatch.DrawString(Font, "You win!", new Vector2(200*kx, 200*kx), Color.White);
 
@@ -364,7 +403,7 @@ namespace sakura
             for (int i = 0; i < 5; i++)
             {
                 for (int j = 0; j < 4; j++)
-                {
+                {                   
                     levels[i][j] = new Level(lvlSelect, new Vector2(lvl0position.X + j * 28 * kx + j * 100 * kx, lvl0position.Y + 28 * kx * i + 100 * i * kx), kx, gameProcess);
                 }
             }
