@@ -288,8 +288,8 @@ namespace sakura
 
             if(gameProcess.isWin)
             {
-                if (totalTime > 1)
-                {
+            //    if (totalTime > 1)
+              //  {
                     totalTime = 0;
                     if ((lvli != 4) && (lvlj != 3))
                     {
@@ -332,7 +332,7 @@ namespace sakura
                             gameProcess.End();
                         }
                     }
-                }
+               // }
             }
 
             if (gameProcess.isGame)
@@ -406,7 +406,7 @@ namespace sakura
                 levels[lvli][lvlj].Draw(closedFlower, Leaf, spriteBatch);
 
             } else 
-            if(totalTime > 1)
+        //    if(totalTime > 1)
             if (gameProcess.isWin) {
                 spriteBatch.Draw(nextTexture, new Vector2(ButtonNext.x, ButtonNext.y), null, Color.White, 0f, Vector2.Zero, (256f * kx / (float)nextTexture.Width), SpriteEffects.None, 0f);
                 spriteBatch.Draw(exitTexture, new Vector2(resX / 2f, ButtonExit.y + exitTexture.Height * (256f * kx / (float)exitTexture.Width) / 2f), null, Color.White, 0f, new Vector2(exitTexture.Width / 2f, exitTexture.Height / 2f), (256f * kx / (float)exitTexture.Width), SpriteEffects.None, 0f);
