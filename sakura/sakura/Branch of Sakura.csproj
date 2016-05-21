@@ -82,6 +82,7 @@
     <Content Include="Content\Begin.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\bffl.png" />
     <Content Include="Content\BRANCH.png" />
     <Content Include="Content\BranchOfSakura.png" />
     <Content Include="Content\branchs.png" />
@@ -101,6 +102,7 @@
     <Content Include="Content\NextLevel.png" />
     <Content Include="Content\sakura and bird.jpg" />
     <Content Include="Content\sakuraLevels.png" />
+    <Content Include="Content\sakuraLevelsLocked.png" />
     <Content Include="Content\sakuraw.tif" />
     <Content Include="Content\sakurwave.tif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

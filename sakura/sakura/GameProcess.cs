@@ -23,6 +23,7 @@ namespace sakura
         public bool isWin;
         public bool isMenuBegin;
         public bool isMenuLvlSelect;
+        public bool isEnd;
 
         public bool isGameOld;
         public bool isWinOld;
@@ -93,6 +94,16 @@ namespace sakura
             isWinOld = isWin;
             isMenuBeginOld = isMenuBegin;
             isMenuLvlSelectOld = isMenuLvlSelect;
+        }
+
+        public void End()
+        {
+            isEnd = true;
+
+            isGame = false;
+            isWin = false;
+            isMenuBegin = false;
+            isMenuLvlSelect = false;
         }
     }
 }

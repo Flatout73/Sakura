@@ -41,6 +41,9 @@ namespace sakura
         public const int countFlowersWidth = 4;
         public const int countFlowersHeight = 7;
 
+        bool isEnd;
+        public bool isPrevEnd { get; set; }
+
         public Vector2 _position
         {
             get

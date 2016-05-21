@@ -14,13 +14,14 @@ namespace sakura
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Texture2D closedFlower, Leaf, LeafHor, selectTexture, exitTexture, lvlSelect, background, startTexture, backGroundOfLevel, nextTexture;
+        Texture2D closedFlower, Leaf, LeafHor, selectTexture, exitTexture, lvlSelect, background, startTexture, backGroundOfLevel, nextTexture, lvlLocked;
         SpriteFont font;
 
         Vector2 flower0Position;
         Vector2 lvl0position;
 
         int lvli, lvlj;
+        float totalTime;
 
         int resX, resY;
         static float kx = 1f, ky = 1f;
@@ -146,9 +147,12 @@ namespace sakura
                         gen = new Generator(2*(i + 1)+ 2*(j + 1));
                         levels[i][j].Initilize(gen._graph);
                         levels[i][j].Mix();
+                        levels[i][j].isPrevEnd = false;
                     }
                 }
-            }      
+            }
+
+            levels[0][0].isPrevEnd = true;      
         }
 
         /// <summary>
@@ -166,6 +170,7 @@ namespace sakura
             selectTexture = Content.Load<Texture2D>("SelectLevel2"); // Кнопка Select Level
             exitTexture = Content.Load<Texture2D>("ExitFl");
             lvlSelect = Content.Load<Texture2D>("sakuraLevels");
+            lvlLocked = Content.Load<Texture2D>("sakuraLevelsLocked");
             background = Content.Load<Texture2D>("sakuraw");
             backGroundOfLevel = Content.Load<Texture2D>("sakura and bird");
             nextTexture = Content.Load<Texture2D>("NextLevel");
@@ -192,6 +197,8 @@ namespace sakura
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+
+            totalTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
             {
@@ -253,7 +260,10 @@ namespace sakura
                 {
                     for (int j = 0; j < 4; j++)
                     {
-                        levels[i][j].button.Process();
+                        if (levels[i][j].isPrevEnd == true)
+                        {
+                            levels[i][j].button.Process();
+                        }
                     }
                 }
             }
@@ -278,27 +288,50 @@ namespace sakura
 
             if(gameProcess.isWin)
             {
-                ButtonExit.Process();
-                ButtonNext.Process();
-
-                if(ButtonExit.IsEnabled)
-                {                
-                    Exit();
-                    ButtonExit.Reset();
-                }
-                if(ButtonNext.IsEnabled)
+                if (totalTime > 1)
                 {
-                    if(lvli % 4 != 3)
+                    totalTime = 0;
+                    if ((lvli != 4) && (lvlj != 3))
                     {
-                        lvli++;
+                        if (lvlj % 4 != 3)
+                        {
+                            levels[lvli][lvlj + 1].isPrevEnd = true;
+                        }
+                        else
+                        {
+                            levels[lvli + 1][0].isPrevEnd = true;
+                        }
                     }
-                    else
+
+                    ButtonExit.Process();
+                    ButtonNext.Process();
+
+                    if (ButtonExit.IsEnabled)
                     {
-                        lvlj++;
-                        lvli = 0;
+                        Exit();
+                        ButtonExit.Reset();
                     }
-                    gameProcess.StartGame();
-                    ButtonNext.Reset();
+                    if (ButtonNext.IsEnabled)
+                    {
+                        if ((lvli != 4) && (lvlj != 3))
+                        {
+                            if (lvlj % 4 != 3)
+                            {
+                                lvlj++;
+                            }
+                            else
+                            {
+                                lvlj = 0;
+                                lvli++;
+                            }
+                            gameProcess.StartGame();
+                            ButtonNext.Reset();
+                        }
+                        else
+                        {
+                            gameProcess.End();
+                        }
+                    }
                 }
             }
 
@@ -350,20 +383,38 @@ namespace sakura
                 Rectangle recrLvl;
                 Vector2 centre;
                 for (int i = 0; i < 5; i++) {
-                    for (int j = 0; j < 4; j++) {
+                    for (int j = 0; j < 4; j++) {                  
                         recrLvl = new Rectangle((int)(lvl0position.X + j * 28 * kx + j * 100 * kx), (int)(lvl0position.Y + 28 * kx * i + 100 * i * kx), (int)(100 * kx), (int)(100 * kx));
-                        spriteBatch.Draw(lvlSelect, recrLvl, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
-                        centre = font.MeasureString(String.Format("{0}", i * 4 + j + 1))/ 2f;
-                        spriteBatch.DrawString(font, String.Format("{0}", i*4+j + 1), new Vector2(recrLvl.X + 50f*kx, recrLvl.Y + 50f*kx), Color.Coral, 0f, centre , kx, SpriteEffects.None, 0f);
+                        
+                        
+                        if (levels[i][j].isPrevEnd == true)
+                        {
+                            centre = font.MeasureString(String.Format("{0}", i * 4 + j + 1)) / 2f;
+                            spriteBatch.Draw(lvlSelect, recrLvl, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
+                            spriteBatch.DrawString(font, String.Format("{0}", i * 4 + j + 1), new Vector2(recrLvl.X + 50f * kx, recrLvl.Y + 50f * kx), Color.Coral, 0f, centre, kx, SpriteEffects.None, 0f);
+                        }
+                        else
+                        {
+                            centre = font.MeasureString("?") / 2f;
+                            spriteBatch.Draw(lvlLocked, recrLvl, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
+                            spriteBatch.DrawString(font, "?", new Vector2(recrLvl.X + 50f * kx, recrLvl.Y + 50f * kx), Color.Coral, 0f, centre, kx, SpriteEffects.None, 0f);
+                        }
                     }
                 }
 
             } else if (gameProcess.isGame) {
                 levels[lvli][lvlj].Draw(closedFlower, Leaf, spriteBatch);
 
-            } else if (gameProcess.isWin) {
+            } else 
+            if(totalTime > 1)
+            if (gameProcess.isWin) {
                 spriteBatch.Draw(nextTexture, new Vector2(ButtonNext.x, ButtonNext.y), null, Color.White, 0f, Vector2.Zero, (256f * kx / (float)nextTexture.Width), SpriteEffects.None, 0f);
                 spriteBatch.Draw(exitTexture, new Vector2(resX / 2f, ButtonExit.y + exitTexture.Height * (256f * kx / (float)exitTexture.Width) / 2f), null, Color.White, 0f, new Vector2(exitTexture.Width / 2f, exitTexture.Height / 2f), (256f * kx / (float)exitTexture.Width), SpriteEffects.None, 0f);
+            }
+            else if (gameProcess.isEnd)
+            {
+                Vector2 centre = font.MeasureString("To be continued...") / 2f;
+                spriteBatch.DrawString(font, "To be continued...", new Vector2(resX/2f, resY/2f), Color.Green, 0f, centre, kx, SpriteEffects.None, 1f);
             }
 
             //spriteBatch.DrawString(Font, "You win!", new Vector2(200*kx, 200*kx), Color.White);
@@ -426,6 +477,7 @@ namespace sakura
                     }
                 }
             }
+            levels[0][0].isPrevEnd = true;
 
         }
     }
