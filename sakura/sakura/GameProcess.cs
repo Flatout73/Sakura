@@ -9,6 +9,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Sakura;
 
 namespace sakura
 {
@@ -24,6 +25,7 @@ namespace sakura
         public bool isMenuBegin;
         public bool isMenuLvlSelect;
         public bool isEnd;
+        public bool isHelp;
 
         public bool isGameOld;
         public bool isWinOld;
@@ -36,6 +38,7 @@ namespace sakura
             isWin = false;
             isMenuBegin = false;
             isMenuLvlSelect = false;
+            isHelp = false;
 
             isGameOld = false;
             isWinOld = false;
@@ -50,7 +53,8 @@ namespace sakura
             isWin = false;
             isGame = false;
             isMenuBegin = true;
-            isMenuLvlSelect = false;          
+            isMenuLvlSelect = false;
+            isHelp = false;   
         }
 
         public void WinGame()
@@ -61,6 +65,7 @@ namespace sakura
             isGame = false;
             isMenuBegin = false;
             isMenuLvlSelect = false;
+            isHelp = false;
         }
 
         public void LvlSelect()
@@ -71,6 +76,7 @@ namespace sakura
             isWin = false;
             isMenuBegin = false;
             isMenuLvlSelect = true;
+            isHelp = false;
         }
 
         public void StartGame()
@@ -80,7 +86,17 @@ namespace sakura
             isGame = true;
             isWin = false;
             isMenuLvlSelect = false;
-            isMenuBegin = false; 
+            isMenuBegin = false;
+            isHelp = false;
+        }
+
+        public void Help()
+        {
+            isHelp = true;
+            isGame = false;
+            isWin = false;
+            isMenuLvlSelect = false;
+            isMenuBegin = false;
         }
 
         public void Initialize()
@@ -104,6 +120,7 @@ namespace sakura
             isWin = false;
             isMenuBegin = false;
             isMenuLvlSelect = false;
+            isHelp = false;
         }
     }
 }

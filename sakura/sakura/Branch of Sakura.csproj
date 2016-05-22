@@ -68,12 +68,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activity1.cs" />
+    <Compile Include="Activity.cs" />
     <Compile Include="Button.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameProcess.cs" />
     <Compile Include="Generator.cs" />
     <Compile Include="Level.cs" />
+    <Compile Include="LevelManager.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Vertex.cs" />
@@ -94,6 +95,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\FlowerOfSakura.png" />
+    <Content Include="Content\Help.png" />
     <Content Include="Content\Leaf.png" />
     <Content Include="Content\LeafHor.png" />
     <Content Include="Content\lvl.png">
@@ -112,6 +114,8 @@
     <Content Include="Content\SelectLevel2.png" />
     <Content Include="Content\Start.png" />
     <AndroidResource Include="Resources\Drawable\Icon.png" />
+    <None Include="Content\helpf.spritefont" />
+    <None Include="Content\helpf.xnb" />
     <None Include="Content\NumberOfLevel.xnb" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
