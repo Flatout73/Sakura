@@ -262,7 +262,22 @@ namespace sakura
                 if (buttonSelect.isEnabled)
                 {
                     gameProcess.LvlSelect();
-                    newInitialize();
+                    levels[0][0].Initilize(flowers);
+
+                    Generator gen;
+
+                    for (int i = 0; i < 5; i++)
+                    {
+                        for (int j = 0; j < 4; j++)
+                        {
+                            if (!(i == 0 && j == 0))
+                            {
+                                gen = new Generator((3 * (i + 1) + 3 * (j + 1)) - 1, 50 * (i + 1) + j);
+                                levels[i][j].Initilize(gen._graph);
+                                levels[i][j].Mix();
+                            }
+                        }
+                    }
                     buttonSelect.Reset();
                 }
                 if (buttonStart.isEnabled)
@@ -458,22 +473,7 @@ namespace sakura
 
         public void newInitialize()
         {
-            levels[0][0].Initilize(flowers);
-
-            Generator gen;
-
-            for (int i = 0; i < 5; i++)
-            {
-                for (int j = 0; j < 4; j++)
-                {
-                    if (!(i == 0 && j == 0))
-                    {
-                        gen = new Generator((3 * (i + 1) + 3 * (j + 1)) - 1, 50 * (i + 1) + j);
-                        levels[i][j].Initilize(gen._graph);
-                        levels[i][j].Mix();
-                    }
-                }
-            }
+            
         }
     }
 }
