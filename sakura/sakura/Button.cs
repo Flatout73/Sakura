@@ -18,7 +18,7 @@ namespace sakura
     class Button
     {
         private TouchCollection Touches;
-        private bool isPressed;
+        public bool isPressed;
         public bool isEnabled;
 
         public float x, y;
@@ -50,7 +50,7 @@ namespace sakura
                 {
 
                 }
-                if ((Touches[0].Position.X > x - 20f * kx) && (Touches[0].Position.X < x + (float)(forScale.X + 20f) * kx) && (Touches[0].Position.Y > y - 20f * kx) &&(Touches[0].Position.Y < y + (float)(forScale.Y + 20f) * kx))
+                if ((Touches[0].Position.X > x - 10f * kx) && (Touches[0].Position.X < x + (float)(forScale.X + 10f) * kx) && (Touches[0].Position.Y > y - 10f * kx) &&(Touches[0].Position.Y < y + (float)(forScale.Y + 10f) * kx))
                 {
                     isPressed = true;
                 }

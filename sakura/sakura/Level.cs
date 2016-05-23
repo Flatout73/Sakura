@@ -55,7 +55,7 @@ namespace sakura
             texture = t;
             position = pos;
             this.kx = kx;
-            button = new Button(position.X, position.Y, kx, new Vector2(100 * kx, 100 * kx));
+            button = new Button(position.X, position.Y, kx, new Vector2(100, 100));
             gameProcess = gm;
 			flower0Position = new Vector2((int)(35 * kx + 30*kx), (int)(35 * kx + 30*kx));
 

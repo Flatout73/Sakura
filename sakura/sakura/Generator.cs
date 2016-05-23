@@ -26,9 +26,9 @@ namespace sakura
             }
         }
 
-        public Generator(int c)
+        public Generator(int c, int r)
         {
-            rnd = new Random(c);
+            rnd = new Random(r);
             v0 = rnd.Next(0, countFlowers);
             graph = new List<int>(countFlowers);
             graph.Add(v0);
@@ -160,7 +160,7 @@ namespace sakura
                                 {
                                     Add(v + 4);
                                 }
-                                else if (v + 4 > 28) // Крайняя нижняя точка?
+                                else if (v + 4 > 27) // Крайняя нижняя точка?
                                 {
                                     Add(v - 4);
                                 }
@@ -186,7 +186,7 @@ namespace sakura
                         }
                         else
                         {
-                            if (v + 4 > 28) // Крайняя нижняя точка?
+                            if (v + 4 > 27) // Крайняя нижняя точка?
                             {
                                 Add(v - 4);
                             }
@@ -325,7 +325,7 @@ namespace sakura
                                 {
                                     Add(v + 4);
                                 }
-                                else if (v + 4 > 28) // Крайняя нижняя точка?
+                                else if (v + 4 > 27) // Крайняя нижняя точка?
                                 {
                                     Add(v - 4);
                                 }
@@ -351,7 +351,7 @@ namespace sakura
                         }
                         else
                         {
-                            if (v + 4 > 28) // Крайняя нижняя точка?
+                            if (v + 4 > 27) // Крайняя нижняя точка?
                             {
                                 Add(v - 4);
                             }

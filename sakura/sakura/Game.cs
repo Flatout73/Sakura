@@ -123,11 +123,9 @@ namespace sakura
                 }
             }
 
-            levels[0][0].Initilize(flowers);  
+            levels[0][0].Initilize(flowers);
 
-			Generator gen = new Generator(4);
-			levels [0] [1].Initilize (gen._graph);
-			levels [0] [1].Mix ();
+            Generator gen;
 
             for (int i = 0; i < 5; i++)
             {
@@ -135,10 +133,11 @@ namespace sakura
                 {
                     if (!(i == 0 && j == 0))
                     {
-                        gen = new Generator(2*(i + 1)+ 2*(j + 1));
+                        gen = new Generator((3*(i + 1) + 3*(j+1)) - 1, 50 * (i+1) + j);
                         levels[i][j].Initilize(gen._graph);
                         levels[i][j].Mix();
                         levels[i][j].isPrevEnd = false;
+                        levels[i][j].button.isPressed = false;
                     }
                 }
             }
@@ -214,7 +213,7 @@ namespace sakura
                     else
                     {
                         gameProcess.NewGame();
-                    }
+                    }        
 
                 }
                 else if (gameProcess.isWin)
@@ -263,6 +262,7 @@ namespace sakura
                 if (buttonSelect.isEnabled)
                 {
                     gameProcess.LvlSelect();
+                    newInitialize();
                     buttonSelect.Reset();
                 }
                 if (buttonStart.isEnabled)
@@ -271,7 +271,7 @@ namespace sakura
                     buttonStart.Reset();
                 }
             }
-
+            else
             if (gameProcess.isMenuLvlSelect)
             {
                 for (int i = 0; i < 5; i++)
@@ -284,10 +284,6 @@ namespace sakura
                         }
                     }
                 }
-            }
-
-            if (gameProcess.isMenuLvlSelect)
-            {
                 for (int i = 0; i < 5; i++)
                 {
                     for (int j = 0; j < 4; j++)
@@ -303,7 +299,7 @@ namespace sakura
                     }
                 }
             }
-
+            else
             if(gameProcess.isWin)
             {
             //    if (totalTime > 1)
@@ -360,7 +356,7 @@ namespace sakura
                     }
                // }
             }
-
+            else
             if (gameProcess.isGame)
             {
                 levels[lvli][lvlj].Update();
@@ -458,6 +454,26 @@ namespace sakura
             spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        public void newInitialize()
+        {
+            levels[0][0].Initilize(flowers);
+
+            Generator gen;
+
+            for (int i = 0; i < 5; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    if (!(i == 0 && j == 0))
+                    {
+                        gen = new Generator((3 * (i + 1) + 3 * (j + 1)) - 1, 50 * (i + 1) + j);
+                        levels[i][j].Initilize(gen._graph);
+                        levels[i][j].Mix();
+                    }
+                }
+            }
         }
     }
 }
