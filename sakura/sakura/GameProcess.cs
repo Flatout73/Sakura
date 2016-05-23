@@ -13,12 +13,9 @@ using Sakura;
 
 namespace sakura
 {
-
-    public delegate void StartNewGame();
     
    public class GameProcess
     {
-        public event StartNewGame init;
 
         public bool isGame;
         public bool isWin;
@@ -97,11 +94,6 @@ namespace sakura
             isWin = false;
             isMenuLvlSelect = false;
             isMenuBegin = false;
-        }
-
-        public void Initialize()
-        {
-            init();
         }
 
         public void SaveOld()

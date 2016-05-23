@@ -26,7 +26,6 @@ namespace sakura
         GameProcess gameProcess;
 
         List<int> graph;
-        int[][][] graph2;
         int[][] graphsum;
 
         bool[] used;
@@ -41,7 +40,6 @@ namespace sakura
         public const int countFlowersWidth = 4;
         public const int countFlowersHeight = 7;
 
-        bool isEnd;
         public bool isPrevEnd { get; set; }
 
         public Vector2 _position
@@ -52,20 +50,12 @@ namespace sakura
             }
         }
 
-        public Texture2D _texture
-        {
-            get
-            {
-                return texture;
-            }
-        }
-
         public Level(Texture2D t, Vector2 pos, float kx, GameProcess gm)
         {
             texture = t;
             position = pos;
             this.kx = kx;
-            button = new Button(position.X, position.Y, kx, new Vector2(100 * kx, 100 * kx), texture);
+            button = new Button(position.X, position.Y, kx, new Vector2(100 * kx, 100 * kx));
             gameProcess = gm;
 			flower0Position = new Vector2((int)(35 * kx + 30*kx), (int)(35 * kx + 30*kx));
 
@@ -110,16 +100,6 @@ namespace sakura
 			   graph = new List<int>(10);
             graph.Add(k);
 
-            graph2 = new int[7][][];
-            for (int i = 0; i < 7; i++)
-            {
-                graph2[i] = new int[4][];
-                for (int j = 0; j < 4; j++)
-                {
-                    graph2[i][j] = new int[4];
-                }
-            }
-
         }
 
 		public void Initilize(List<int> g) 
@@ -132,7 +112,7 @@ namespace sakura
 
 			for (int i = 0; i < g.Count; i++) 
 			{
-				flowers [g[i] / 4] [g[i] % 4] = new Vertex(flowersPosition[g[i]/4][g[i]%4], kx, kx, false, false, false, false);
+				flowers [g[i] / 4] [g[i] % 4] = new Vertex(flowersPosition[g[i]/4][g[i]%4], kx, false, false, false, false);
 			}
 
             for (int i = 0; i < g.Count; i++)
@@ -142,25 +122,25 @@ namespace sakura
 
                     if (g[i] - 4 == g[j])
                     {
-                        flowers[g[i] / 4][g[i] % 4].edgeUp = true;
-                        flowers[g[j] / 4][g[j] % 4].edgeDown = true;
+                        flowers[g[i] / 4][g[i] % 4]._edgeUp = true;
+                        flowers[g[j] / 4][g[j] % 4]._edgeDown = true;
                     }
 
                     if (g[i] + 1 == g[j])
                     {
-                        flowers[g[i] / 4][g[i] % 4].edgeRight = true;
-                        flowers[g[j] / 4][g[j] % 4].edgeLeft = true;
+                        flowers[g[i] / 4][g[i] % 4]._edgeRight = true;
+                        flowers[g[j] / 4][g[j] % 4]._edgeLeft = true;
                     }
 
                     if (g[i] + 4 == g[j])
                     {
-                        flowers[g[i] / 4][g[i] % 4].edgeDown = true;
-                        flowers[g[j] / 4][g[j] % 4].edgeUp = true;
+                        flowers[g[i] / 4][g[i] % 4]._edgeDown = true;
+                        flowers[g[j] / 4][g[j] % 4]._edgeUp = true;
                     }
                     if (g[i] - 1 == g[j])
                     {
-                        flowers[g[i] / 4][g[i] % 4].edgeLeft = true;
-                        flowers[g[j] / 4][g[j] % 4].edgeRight = true;
+                        flowers[g[i] / 4][g[i] % 4]._edgeLeft = true;
+                        flowers[g[j] / 4][g[j] % 4]._edgeRight = true;
                     }
                 }
             }
@@ -185,8 +165,6 @@ namespace sakura
                         if (i - 1 > -1 && flowers[i - 1][j] != null)
                             if (flowers[i][j]._edgeUp && flowers[i - 1][j]._edgeDown)
                             {
-                     //           graph.Add(4 * i + j - 4);
-                   //             graph2[i][j][k] = 4 * i + j - 4;
                                 graphsum[4 * i + j][k] = 4 * i + j - 4;
                                 k++;
                             }
@@ -194,8 +172,6 @@ namespace sakura
                         if (j - 1 > -1 && flowers[i][j - 1] != null)
                             if (flowers[i][j]._edgeLeft && flowers[i][j - 1]._edgeRight)
                             {
-                     //           graph.Add(i * 4 + j - 1);
-                   //             graph2[i][j][k] = i * 4 + j - 1;
                                 graphsum[4*i + j][k] = i * 4 + j - 1;
                                 k++;
                             }
@@ -203,8 +179,6 @@ namespace sakura
                         if (j + 1 < 4 && flowers[i][j + 1] != null)
                             if (flowers[i][j]._edgeRight && flowers[i][j + 1]._edgeLeft)
                             {
-                         //       graph.Add(i * 4 + j + 1);
-                       //         graph2[i][j][k] = i * 4 + j + 1;
                                 graphsum[4*i + j][k] = i * 4 + j + 1;
                                 k++;
                             }
@@ -212,14 +186,10 @@ namespace sakura
                         if (i + 1 < 7 && flowers[i + 1][j] != null)
                             if (flowers[i][j]._edgeDown && flowers[i + 1][j]._edgeUp)
                             {
-                     //           graph.Add(4 * i + j + 4);
-                   //             graph2[i][j][k] = 4 * i + j + 4;
                                 graphsum[4*i + j][k] = 4 * i + j + 4;
                                 k++;
 
                             }
-
-                 //       graph.Add(-1);
                     }
                     else
                     {
@@ -228,7 +198,7 @@ namespace sakura
                 }
             }
 
-            dfs(0);
+            Search(0);
             bool flag = true;
             for (int i = 0; i < 7; i++)
             {
@@ -267,7 +237,7 @@ namespace sakura
             }
         }
 
-        void dfs(int v)
+        void Search(int v)
 		{
 				int to = -1;
 				used [v] = true;
@@ -277,12 +247,12 @@ namespace sakura
 					if (graphsum [v] [i] != -1) {
 						to = graphsum [v] [i];
 						if (!used [to]) {
-							dfs (to);
+							Search (to);
 						}
 					}
 				} 
 			} else {
-				dfs (v + 1);
+				Search (v + 1);
 			}
 		}
 

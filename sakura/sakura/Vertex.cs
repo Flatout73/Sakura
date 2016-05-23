@@ -20,10 +20,10 @@ namespace sakura
     class Vertex
     {
         Vector2 position;
-		public bool edgeUp;
-        public bool edgeRight;
-        public bool edgeDown;
-        public bool edgeLeft;
+		bool edgeUp;
+        bool edgeRight;
+        bool edgeDown;
+        bool edgeLeft;
 
         bool edgeUpNew;
         bool edgeRightNew;
@@ -37,12 +37,20 @@ namespace sakura
             {
                 return edgeUp;
             }
+            set
+            {
+                edgeUp = value;
+            }
         }
         public bool _edgeDown
         {
             get
             {
                 return edgeDown;
+            }
+            set
+            {
+                edgeDown = value;
             }
         }
 
@@ -52,12 +60,20 @@ namespace sakura
             {
                 return edgeLeft;
             }
+            set
+            {
+                edgeLeft = value;
+            }
         }
         public bool _edgeRight
         {
             get
             {
                 return edgeRight;
+            }
+            set
+            {
+                edgeRight = value;
             }
         }
 
@@ -69,7 +85,7 @@ namespace sakura
         Button turn;
         private int touches = 0;
 
-        public Vertex(Vector2 p, float kx, float ky, bool eU, bool eR, bool eD, bool eL)
+        public Vertex(Vector2 p, float kx, bool eU, bool eR, bool eD, bool eL)
         {
             position = p;
 
@@ -84,9 +100,8 @@ namespace sakura
             edgeLeftNew = false;
 
             this.kx = kx;
-            this.ky = ky;
 
-            turn = new Button(p.X, p.Y, kx, new Vector2(flowerWidth, flowerHeight), null);
+            turn = new Button(p.X, p.Y, kx, new Vector2(flowerWidth, flowerHeight));
         }
 
         public void Tap()
@@ -126,7 +141,7 @@ namespace sakura
         {
             turn.Process();
 
-            if(turn.IsEnabled)
+            if(turn.isEnabled)
             {
                 Tap();
                 touches++;

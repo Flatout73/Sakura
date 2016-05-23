@@ -80,37 +80,16 @@
     <Compile Include="Vertex.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Begin.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\bffl.png" />
-    <Content Include="Content\BRANCH.png" />
     <Content Include="Content\BranchOfSakura.png" />
     <Content Include="Content\branchs.png" />
-    <Content Include="Content\Exit.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Content\ExitFl.png" />
-    <Content Include="Content\fl.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Content\FlowerOfSakura.png" />
     <Content Include="Content\Help.png" />
-    <Content Include="Content\Leaf.png" />
-    <Content Include="Content\LeafHor.png" />
-    <Content Include="Content\lvl.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Content\NextLevel.png" />
     <Content Include="Content\sakura and bird.jpg" />
     <Content Include="Content\sakuraLevels.png" />
     <Content Include="Content\sakuraLevelsLocked.png" />
     <Content Include="Content\sakuraw.tif" />
-    <Content Include="Content\sakurwave.tif">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Sakura.png" />
-    <Content Include="Content\SelectLevel.png" />
     <Content Include="Content\SelectLevel2.png" />
     <Content Include="Content\Start.png" />
     <AndroidResource Include="Resources\Drawable\Icon.png" />
@@ -141,11 +120,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\flower.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
