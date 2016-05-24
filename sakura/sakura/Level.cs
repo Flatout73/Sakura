@@ -220,7 +220,7 @@ namespace sakura
             }
             if (flag)
             {
-				gameProcess.WinGame();
+				gameProcess.Winning();
             }
 
         }

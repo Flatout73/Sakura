@@ -13,7 +13,7 @@ using Sakura;
 
 namespace sakura
 {
-    
+       
    public class GameProcess
     {
 
@@ -23,6 +23,7 @@ namespace sakura
         public bool isMenuLvlSelect;
         public bool isEnd;
         public bool isHelp;
+        public bool isWinning;
 
         public bool isGameOld;
         public bool isWinOld;
@@ -36,6 +37,7 @@ namespace sakura
             isMenuBegin = false;
             isMenuLvlSelect = false;
             isHelp = false;
+            isWinning = false;
 
             isGameOld = false;
             isWinOld = false;
@@ -51,7 +53,8 @@ namespace sakura
             isGame = false;
             isMenuBegin = true;
             isMenuLvlSelect = false;
-            isHelp = false;   
+            isHelp = false;
+            isWinning = false;
         }
 
         public void WinGame()
@@ -63,6 +66,7 @@ namespace sakura
             isMenuBegin = false;
             isMenuLvlSelect = false;
             isHelp = false;
+            isWinning = false;
         }
 
         public void LvlSelect()
@@ -74,6 +78,7 @@ namespace sakura
             isMenuBegin = false;
             isMenuLvlSelect = true;
             isHelp = false;
+            isWinning = false;
         }
 
         public void StartGame()
@@ -85,6 +90,7 @@ namespace sakura
             isMenuLvlSelect = false;
             isMenuBegin = false;
             isHelp = false;
+            isWinning = false;
         }
 
         public void Help()
@@ -94,6 +100,7 @@ namespace sakura
             isWin = false;
             isMenuLvlSelect = false;
             isMenuBegin = false;
+            isWinning = false;
         }
 
         public void SaveOld()
@@ -113,6 +120,18 @@ namespace sakura
             isMenuBegin = false;
             isMenuLvlSelect = false;
             isHelp = false;
+            isWinning = false;
+        }
+
+        public void Winning()
+        {
+            isGame = true;
+            isWin = false;
+            isMenuBegin = false;
+            isMenuLvlSelect = false;
+            isHelp = false;
+            isWinning = true;
+
         }
     }
 }

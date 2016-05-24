@@ -16,13 +16,14 @@ namespace sakura
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D closedFlower, Leaf, selectTexture, exitTexture, lvlSelect, background, startTexture, backGroundOfLevel, nextTexture, lvlLocked, helpTexture;
+        Texture2D startTexturePressed, nextTexturePressed, selectTexturePressed, exitTexturePressed;
         SpriteFont font, help;
 
         Vector2 flower0Position;
         Vector2 lvl0position;
 
         int lvli, lvlj;
-        float totalTime;
+        float totalTime = 0;
 
         int resX, resY;
         static float kx = 1f;
@@ -176,6 +177,10 @@ namespace sakura
             font = Content.Load<SpriteFont>("NumberOfLevel");
             helpTexture = Content.Load<Texture2D>("Help");
             help = Content.Load<SpriteFont>("helpf");
+            startTexturePressed = Content.Load<Texture2D>("StartPressed");
+            selectTexturePressed = Content.Load<Texture2D>("SelectLevelPressed");
+            exitTexturePressed = Content.Load<Texture2D>("ExitPressed");
+            nextTexturePressed = Content.Load<Texture2D>("NextLevelPressed");
 
         }
 
@@ -196,6 +201,7 @@ namespace sakura
         protected override void Update(GameTime gameTime)
         {
 
+            if(gameProcess.isWinning)
             totalTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
@@ -317,8 +323,6 @@ namespace sakura
             else
             if(gameProcess.isWin)
             {
-            //    if (totalTime > 1)
-              //  {
                     totalTime = 0;
                     if (!((lvli == 4) && (lvlj == 3)))
                     {
@@ -369,7 +373,6 @@ namespace sakura
                             gameProcess.End();
                         }
                     }
-               // }
             }
             else
             if (gameProcess.isGame)
@@ -418,9 +421,30 @@ namespace sakura
 
             if (gameProcess.isMenuBegin == true) {
 
-                spriteBatch.Draw(selectTexture, new Vector2(resX / 2f, resY / 2f), null, Color.White, 0f, new Vector2(selectTexture.Width / 2f, selectTexture.Height / 2f), (256f * kx / (float)selectTexture.Width), SpriteEffects.None, 0f);
-                spriteBatch.Draw(exitTexture, new Vector2(resX / 2f, buttonExit.y + exitTexture.Height * (256f * kx / (float)exitTexture.Width) / 2f), null, Color.White, 0f, new Vector2(exitTexture.Width / 2f, exitTexture.Height / 2f), (256f * kx / (float)exitTexture.Width), SpriteEffects.None, 0f);
-                spriteBatch.Draw(startTexture, new Vector2(resX / 2f, buttonStart.y + startTexture.Height * (256f * kx / (float)startTexture.Width) / 2f), null, Color.White, 0f, new Vector2(startTexture.Width / 2f, startTexture.Height / 2f), (256f * kx / (float)startTexture.Width), SpriteEffects.None, 0f);
+                if (buttonSelect.isPressed)
+                {
+                    spriteBatch.Draw(selectTexturePressed, new Vector2(resX / 2f, resY / 2f), null, Color.White, 0f, new Vector2(selectTexture.Width / 2f, selectTexture.Height / 2f), (256f * kx / (float)selectTexture.Width), SpriteEffects.None, 0f);
+                }
+                else
+                {
+                    spriteBatch.Draw(selectTexture, new Vector2(resX / 2f, resY / 2f), null, Color.White, 0f, new Vector2(selectTexture.Width / 2f, selectTexture.Height / 2f), (256f * kx / (float)selectTexture.Width), SpriteEffects.None, 0f);
+                }
+                if (buttonExit.isPressed)
+                {
+                    spriteBatch.Draw(exitTexturePressed, new Vector2(resX / 2f, buttonExit.y + exitTexture.Height * (256f * kx / (float)exitTexture.Width) / 2f), null, Color.White, 0f, new Vector2(exitTexture.Width / 2f, exitTexture.Height / 2f), (256f * kx / (float)exitTexture.Width), SpriteEffects.None, 0f);
+                }
+                else
+                {
+                    spriteBatch.Draw(exitTexture, new Vector2(resX / 2f, buttonExit.y + exitTexture.Height * (256f * kx / (float)exitTexture.Width) / 2f), null, Color.White, 0f, new Vector2(exitTexture.Width / 2f, exitTexture.Height / 2f), (256f * kx / (float)exitTexture.Width), SpriteEffects.None, 0f);
+                }
+                if (buttonStart.isPressed)
+                {
+                    spriteBatch.Draw(startTexturePressed, new Vector2(resX / 2f, buttonStart.y + startTexture.Height * (256f * kx / (float)startTexture.Width) / 2f), null, Color.White, 0f, new Vector2(startTexture.Width / 2f, startTexture.Height / 2f), (256f * kx / (float)startTexture.Width), SpriteEffects.None, 0f);
+                }
+                else
+                {
+                    spriteBatch.Draw(startTexture, new Vector2(resX / 2f, buttonStart.y + startTexture.Height * (256f * kx / (float)startTexture.Width) / 2f), null, Color.White, 0f, new Vector2(startTexture.Width / 2f, startTexture.Height / 2f), (256f * kx / (float)startTexture.Width), SpriteEffects.None, 0f);
+                }
 
             } else if (gameProcess.isMenuLvlSelect == true) {
                 Rectangle recrLvl;
@@ -448,12 +472,37 @@ namespace sakura
             } else if (gameProcess.isGame) {
                 levels[lvli][lvlj].Draw(closedFlower, Leaf, spriteBatch);
                 spriteBatch.Draw(helpTexture, new Vector2(resX / 2f, buttonHelp.y + helpTexture.Height * (256f * kx / (float)helpTexture.Width) / 2f), null, Color.White, 0f, new Vector2(helpTexture.Width / 2f, helpTexture.Height / 2f), (256f * kx / (float)helpTexture.Width), SpriteEffects.None, 0f);
-
+                if(gameProcess.isWinning)
+                {
+                    if (totalTime < 2)
+                    {
+                        Vector2 centre = font.MeasureString("You win!") / 2f;
+                        spriteBatch.DrawString(font, "You win!", new Vector2(resX / 2f, resY / 2f), Color.Red, 0f, centre, kx, SpriteEffects.None, 1f);
+                    }
+                    else
+                    {
+                        gameProcess.WinGame();
+                        totalTime = 0;
+                    }
+                }
             } else 
-        //    if(totalTime > 1)
             if (gameProcess.isWin) {
-                spriteBatch.Draw(nextTexture, new Vector2(buttonNext.x, buttonNext.y), null, Color.White, 0f, Vector2.Zero, (256f * kx / (float)nextTexture.Width), SpriteEffects.None, 0f);
-                spriteBatch.Draw(exitTexture, new Vector2(resX / 2f, buttonExit.y + exitTexture.Height * (256f * kx / (float)exitTexture.Width) / 2f), null, Color.White, 0f, new Vector2(exitTexture.Width / 2f, exitTexture.Height / 2f), (256f * kx / (float)exitTexture.Width), SpriteEffects.None, 0f);
+                if (buttonNext.isPressed)
+                {
+                    spriteBatch.Draw(nextTexturePressed, new Vector2(buttonNext.x, buttonNext.y), null, Color.White, 0f, Vector2.Zero, (256f * kx / (float)nextTexture.Width), SpriteEffects.None, 0f);
+                }
+                else
+                {
+                    spriteBatch.Draw(nextTexture, new Vector2(buttonNext.x, buttonNext.y), null, Color.White, 0f, Vector2.Zero, (256f * kx / (float)nextTexture.Width), SpriteEffects.None, 0f);
+                }
+                if (buttonExit.isPressed)
+                {
+                    spriteBatch.Draw(exitTexturePressed, new Vector2(resX / 2f, buttonExit.y + exitTexture.Height * (256f * kx / (float)exitTexture.Width) / 2f), null, Color.White, 0f, new Vector2(exitTexture.Width / 2f, exitTexture.Height / 2f), (256f * kx / (float)exitTexture.Width), SpriteEffects.None, 0f);
+                }
+                else
+                {
+                    spriteBatch.Draw(exitTexture, new Vector2(resX / 2f, buttonExit.y + exitTexture.Height * (256f * kx / (float)exitTexture.Width) / 2f), null, Color.White, 0f, new Vector2(exitTexture.Width / 2f, exitTexture.Height / 2f), (256f * kx / (float)exitTexture.Width), SpriteEffects.None, 0f);
+                }
             }
             else if (gameProcess.isEnd)
             {
