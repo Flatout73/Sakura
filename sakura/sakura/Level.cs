@@ -29,6 +29,7 @@ namespace sakura
         int[][] graphsum;
 
         bool[] used;
+        List<int> usedgr;
 
         List<int> comp;
 
@@ -82,6 +83,8 @@ namespace sakura
 
 			comp = new List<int>(28);
 
+            usedgr = new List<int>(28);
+
         }
 
         public void Initilize(Vertex[][] fl)
@@ -104,9 +107,11 @@ namespace sakura
 
 		public void Initilize(List<int> g) 
 		{
-			flowers = new Vertex[7][]; 
+			flowers = new Vertex[7][];
 
-			for (int i = 0; i < 7; i++) {
+            usedgr.Clear();
+
+            for (int i = 0; i < 7; i++) {
 				flowers [i] = new Vertex[4];
 			}
 
@@ -115,32 +120,35 @@ namespace sakura
 				flowers [g[i] / 4] [g[i] % 4] = new Vertex(flowersPosition[g[i]/4][g[i]%4], kx, false, false, false, false);
 			}
 
-            for (int i = 0; i < g.Count; i++)
+            for (int i = 0; i < g.Count - 1; i++)
             {
-                for (int j = 0; j < g.Count; j++)
-                {
+                    if ((Math.Abs(g[i] - g[i + 1]) == 4) | Math.Abs(g[i] - g[i + 1]) == 1)  // Учитываем только соседние
+                    {
+                    if (!usedgr.Contains(g[i + 1]))
+                    {
+                        if (g[i] - 4 == g[i + 1])
+                        {
+                            flowers[g[i] / 4][g[i] % 4]._edgeUp = true;
+                            flowers[g[i + 1] / 4][g[i + 1] % 4]._edgeDown = true;
+                        }
 
-                    if (g[i] - 4 == g[j])
-                    {
-                        flowers[g[i] / 4][g[i] % 4]._edgeUp = true;
-                        flowers[g[j] / 4][g[j] % 4]._edgeDown = true;
-                    }
+                        if (g[i] + 1 == g[i + 1])
+                        {
+                            flowers[g[i] / 4][g[i] % 4]._edgeRight = true;
+                            flowers[g[i + 1] / 4][g[i + 1] % 4]._edgeLeft = true;
+                        }
 
-                    if (g[i] + 1 == g[j])
-                    {
-                        flowers[g[i] / 4][g[i] % 4]._edgeRight = true;
-                        flowers[g[j] / 4][g[j] % 4]._edgeLeft = true;
-                    }
-
-                    if (g[i] + 4 == g[j])
-                    {
-                        flowers[g[i] / 4][g[i] % 4]._edgeDown = true;
-                        flowers[g[j] / 4][g[j] % 4]._edgeUp = true;
-                    }
-                    if (g[i] - 1 == g[j])
-                    {
-                        flowers[g[i] / 4][g[i] % 4]._edgeLeft = true;
-                        flowers[g[j] / 4][g[j] % 4]._edgeRight = true;
+                        if (g[i] + 4 == g[i + 1])
+                        {
+                            flowers[g[i] / 4][g[i] % 4]._edgeDown = true;
+                            flowers[g[i + 1] / 4][g[i + 1] % 4]._edgeUp = true;
+                        }
+                        if (g[i] - 1 == g[i + 1])
+                        {
+                            flowers[g[i] / 4][g[i] % 4]._edgeLeft = true;
+                            flowers[g[i + 1] / 4][g[i + 1] % 4]._edgeRight = true;
+                        }
+                        usedgr.Add(g[i]);
                     }
                 }
             }

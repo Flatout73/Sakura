@@ -12,6 +12,7 @@ namespace sakura
         int r = 0;
         int v0;
         int count;
+        int m = 0;
 
         public const int countFlowersWidth = 4;
         public const int countFlowersHeight = 7;
@@ -378,13 +379,58 @@ namespace sakura
             }
         }
 
-            void Add(int l)
+        void Add(int l)
         {
+            if (m < 3)
+            {
+                if (graph.Contains(l))
+                {
+                    graph.Add(l);
+                    Generate(l);
+                    r = -1;
+                    m++;
+                }
+                else
+                {
+                    graph.Add(l);
+                    k++;
+                    Generate(l);
+                    r = -1;
+                }
+            }
+            else
+            {
                 graph.Add(l);
                 k++;
-                Generate(l);
                 r = -1;
+                m = 0;
+                if (!graph.Contains(l - 4) && (l - 4 > 0))
+                {
+                    graph.Add(l - 4);
+                    Generate(l - 4);
+                }
+                else if (!graph.Contains(l + 4) && (l + 4 < 28))
+                {
+                    graph.Add(l + 4);
+                    Generate(l + 4);
+                }
+                else if (!graph.Contains(l + 1) && ((l + 1) % 4 != 3))
+                {
+                    graph.Add(l + 1);
+                    Generate(l + 1);
+                }
+                else if (!graph.Contains(l - 1) && ((l - 1) % 4 != 0))
+                {
+                    graph.Add(l - 1);
+                    Generate(l - 1);
+                }
+                else
+                {
+                    if(graph.Count > 2)
+                    Generate(graph[graph.Count - 3]);
+                }
             }
-
         }
+
     }
+}

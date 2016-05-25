@@ -28,9 +28,9 @@ namespace sakura
         int resX, resY;
         static float kx = 1f;
 
-        public const int countFlowers = 28;
+        public const int countflowers0 = 28;
 
-        Vertex[][] flowers;
+        Vertex[][] flowers0, flowers5, flowers9;
         Level[][] levels;
 
         Button buttonSelect;
@@ -83,28 +83,43 @@ namespace sakura
             buttonHelp = new Button(resX / 2f - (float)helpTexture.Width * (256f * kx / (float)helpTexture.Width), (float)resY - 2*(helpTexture.Height * (256f * kx / (float)helpTexture.Width) / 2f) - 5 * kx, kx, new Vector2(helpTexture.Width * (256f / (float)helpTexture.Width), helpTexture.Height * (256f / (float)helpTexture.Width)));
 
             flower0Position = new Vector2((int)(35 * kx + 30*kx), (int)(35 * kx + 30*kx));
-            flowers = new Vertex[7][];
+            flowers0 = new Vertex[7][];
+            flowers5 = new Vertex[7][];
 
             for (int i = 0; i < 7; i++)
             {
-                flowers[i] = new Vertex[4];
+                flowers0[i] = new Vertex[4];
+                flowers5[i] = new Vertex[4];
             }
 
             for (int i = 0; i < 7; i++)
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    flowers[i][j] = null;
+                    flowers0[i][j] = null;
                 }
             }
-                flowers[0][0] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 0, 0), kx, true, false, false, true);
-                flowers[0][1] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 1, 0), kx, true, false, true, false);
-                flowers[0][2] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 2, 0), kx, true, false, false, true);
-                flowers[0][3] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 3, 0), kx, true, false, false, false);
-                flowers[1][0] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 0, (70 + 50) * kx * 1), kx, true, true, true, false);
-                flowers[1][1] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 1, (70 + 50) * kx * 1), kx, false, true, false, true);
-                flowers[1][2] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 2, (70 + 50) * kx * 1), kx, true, false, true, true);
-                flowers[1][3] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 3, (70 + 50) * kx * 1), kx, true, true, false, false);
+                flowers0[0][0] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 0, 0), kx, true, false, false, true);
+                flowers0[0][1] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 1, 0), kx, true, false, true, false);
+                flowers0[0][2] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 2, 0), kx, true, false, false, true);
+                flowers0[0][3] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 3, 0), kx, true, false, false, false);
+                flowers0[1][0] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 0, (70 + 50) * kx * 1), kx, true, true, true, false);
+                flowers0[1][1] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 1, (70 + 50) * kx * 1), kx, false, true, false, true);
+                flowers0[1][2] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 2, (70 + 50) * kx * 1), kx, true, false, true, true);
+                flowers0[1][3] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 3, (70 + 50) * kx * 1), kx, true, true, false, false);
+
+            flowers5[4][0] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 0, (70 + 50) * kx * 4), kx, true, false, false, false);
+            flowers5[4][1] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 1, (70 + 50) * kx * 4), kx, true, false, true, false);
+            flowers5[4][2] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 2, (70 + 50) * kx * 4), kx, true, false, true, true);
+            flowers5[4][3] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 3, (70 + 50) * kx * 4), kx, true, true, false, false);
+            flowers5[5][0] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 0, (70 + 50) * kx * 5), kx, true, true, false, false);
+            flowers5[5][1] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 1, (70 + 50) * kx * 5), kx, false, true, true, false);
+            flowers5[5][2] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 2, (70 + 50) * kx * 5), kx, false, true, false, true);
+            flowers5[5][3] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 3, (70 + 50) * kx * 5), kx, true, false, true, false);
+            flowers5[6][0] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 0, (70 + 50) * kx * 6), kx, true, false, false, false);
+            flowers5[6][1] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 1, (70 + 50) * kx * 6), kx, false, true, true, false);
+            flowers5[6][2] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 2, (70 + 50) * kx * 6), kx, false, false, true, true);
+            flowers5[6][3] = new Vertex(flower0Position + new Vector2((70 + 50) * kx * 3, (70 + 50) * kx * 6), kx, false, true, false, false);
 
             gameProcess.NewGame();
 
@@ -124,7 +139,7 @@ namespace sakura
                 }
             }
 
-            levels[0][0].Initilize(flowers);
+            levels[0][0].Initilize(flowers0);
 
             Generator gen;
 
@@ -143,6 +158,7 @@ namespace sakura
                 }
             }
 
+            levels[1][0].Initilize(flowers5);
             levels[0][0].isPrevEnd = true;
 
             LevelManager = LevelManager.ReadLevels();
@@ -215,6 +231,7 @@ namespace sakura
                     if (gameProcess.isMenuLvlSelectOld)
                     {
                         gameProcess.LvlSelect();
+                        newInitialize();
                     }
                     else
                     {
@@ -223,14 +240,19 @@ namespace sakura
 
                 }
                 else if (gameProcess.isWin)
-                {
+                {    
                     gameProcess.LvlSelect();
+                    newInitialize();
                 }
                 else if (gameProcess.isHelp)
                 {
                     gameProcess.StartGame();
                 }
-                else
+                else if(gameProcess.isEnd)
+                {
+                    gameProcess.LvlSelect();
+                }
+                else 
                 {
                     for (int i = 0; i < 5; i++)
                     {
@@ -268,22 +290,9 @@ namespace sakura
                 if (buttonSelect.isEnabled)
                 {
                     gameProcess.LvlSelect();
-                    levels[0][0].Initilize(flowers);
+                    levels[0][0].Initilize(flowers0);
 
-                    Generator gen;
-
-                    for (int i = 0; i < 5; i++)
-                    {
-                        for (int j = 0; j < 4; j++)
-                        {
-                            if (!(i == 0 && j == 0))
-                            {
-                                gen = new Generator((3 * (i + 1) + 3 * (j + 1)) - 1, 50 * (i + 1) + j);
-                                levels[i][j].Initilize(gen._graph);
-                                levels[i][j].Mix();
-                            }
-                        }
-                    }
+                    newInitialize();
                     buttonSelect.Reset();
                 }
                 if (buttonStart.isEnabled)
@@ -511,8 +520,8 @@ namespace sakura
             }
             else if (gameProcess.isHelp)
             {
-                Vector2 centre = help.MeasureString("If you want to win, \nyou should connect all flowers \ntapping on them.") / 2f;
-                spriteBatch.DrawString(help, "If you want to win, \nyou should connect all flowers \ntapping on them. Have fun.", new Vector2(resX/2, resY/2), Color.Red, 0f, centre, kx, SpriteEffects.None, 1f);
+                Vector2 centre = help.MeasureString("If you want to win, \nyou should connect all flowers0 \ntapping on them.") / 2f;
+                spriteBatch.DrawString(help, "If you want to win, \nyou should connect all flowers0 \ntapping on them. Have fun.", new Vector2(resX/2, resY/2), Color.Red, 0f, centre, kx, SpriteEffects.None, 1f);
             }
 
             spriteBatch.End();
@@ -522,7 +531,23 @@ namespace sakura
 
         public void newInitialize()
         {
-            
+            levels[0][0].Initilize(flowers0);
+
+            Generator gen;
+
+            for (int i = 0; i < 5; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    if (!(i == 0 && j == 0))
+                    {
+                        gen = new Generator((3 * (i + 1) + 3 * (j + 1)) - 1, 50 * (i + 1) + j);
+                        levels[i][j].Initilize(gen._graph);
+                        levels[i][j].Mix();
+                    }
+                }
+            }
+            levels[1][0].Initilize(flowers5);
         }
     }
 }
